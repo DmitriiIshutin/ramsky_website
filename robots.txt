@@ -1,0 +1,13 @@
+# Ram Sky — robots.txt
+# Allow all legitimate crawlers. Point them to the sitemap.
+
+User-agent: *
+Allow: /
+
+# If you ever want to block specific scrapers, add blocks like:
+# User-agent: AhrefsBot
+# Disallow: /
+# User-agent: SemrushBot
+# Disallow: /
+
+Sitemap: https://ramsky.co.uk/sitemap.xml

@@ -1,0 +1,32 @@
+# Ram Sky
+
+> Boutique energy trading consultancy that builds power trading capability for BESS asset owners, IPPs, energy suppliers, and ETRM vendors across Great Britain and Europe. Hands-on delivery across the full trading lifecycle — route-to-market, in-house trading platforms, algorithmic strategies, forecasting, and quantitative research — from idea to live P&L.
+
+Ram Sky is founded and led by Dmitrii Ishutin, formerly a power and carbon curve trader at EDF Energy (£10m+ P&L) and a product lead at Shell where he built the proprietary Battery Trading Platform underpinning a £20m+ annual revenue BESS portfolio that topped the Modo Energy BESS leaderboard in December 2023 and January 2024, ahead of EDF, Tesla, and bp.
+
+Ram Sky differs from the large consultancies (Baringa, Aurora, Cornwall Insight) in that engagements are led and delivered by experienced traders and quants, not junior analysts; delivery is hands-on build-and-run, not report-and-recommend; and outputs are working platforms, live algorithms, and running desks, not slideware.
+
+## Core services
+
+- **BESS trading & optimisation** — in-house trading platform design and build, day-ahead and intraday algorithmic execution, Balancing Mechanism automation, intraday volume churn strategies, ancillary services and wholesale cross-market optimisation, degradation-aware dispatch, Modo and peer benchmarking.
+- **Route-to-market & trading internalisation** — build-vs-buy analysis, phased cost modelling, EPEX and Nord Pool exchange registration, ECC clearing arrangements, Elexon BSC accession and NESO onboarding, ETRM vendor selection and RFP management, target operating model, back/middle/front office process and data mapping.
+- **Demand & price forecasting, quant & analytics** — short-term and long-term power and gas demand forecasting, imbalance and NIV forecasting, price forecasting for power/gas/carbon, triad and peak-demand prediction, Perfect Foresight benchmarking, algorithm backtesting, automated Python and R data pipelines.
+- **Trading due diligence & ETRM advisory** — buy-side trading due diligence on energy trading operators, trading capability and technology stack assessment, ETRM sales engineering and RFP/RFI responses, product feedback and roadmap input for trading SaaS vendors, market research and trading operating model diagnostics.
+
+## Representative engagements
+
+- **Energy supermajor, 300MW+ GB BESS fleet** — product-managed the design and build of a proprietary Battery Trading Platform spanning day-ahead, intraday, and Balancing Mechanism optimisation. Took the fleet from 8th to #1 on the Modo Energy BESS leaderboard in December 2023 and January 2024. Underpins a £20m+ annual revenue line.
+- **Large GB BESS owner, 600MW BESS + 150MW peakers** — led the end-to-end trading internalisation programme: systems architecture, business case and build-vs-buy analysis presented to the CEO, vendor selection across back/middle/front office, ETRM onboarding, exchange and BSC registration.
+- **European IPP, 120MW live + 1GW pipeline in Germany** — full trading platform UI/UX, data architecture, and business process design. Spec was complete enough for engineering to start implementation without a translation layer.
+- **Growing UK energy supplier** — rebuilt short-term and long-term power demand forecasting models. Mean Absolute Percentage Error roughly halved across both; long-term run time fell from six hours to under 30 minutes; imbalance costs down ~20%.
+
+## Engagement models
+
+Ram Sky offers focused sprints, 90-day roadmaps, ongoing retainers, and fixed or outcome-based arrangements depending on client need. Engagements typically run from short discovery sprints through to multi-month programme delivery.
+
+## Contact
+
+- Website: https://ramsky.co.uk/
+- Founder: Dmitrii Ishutin, https://linkedin.com/in/dishutin
+- Email: dmitrii.ishutin@ramsky.co.uk
+- Location: United Kingdom; serving clients across Great Britain and Europe.
