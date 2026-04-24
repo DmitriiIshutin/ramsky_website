@@ -76,7 +76,7 @@
       top: 0;
       left: 0;
       right: 0;
-      z-index: 1000;
+      z-index: 1003;
       padding: 12px 0;
       transition: all 0.3s ease;
     }
@@ -750,7 +750,7 @@
       }
       .ai-carousel-arrow {
         position: absolute;
-        top: 50%;
+        top: calc(50% - 24px);
         transform: translateY(-50%);
         width: 40px;
         height: 40px;
@@ -1285,6 +1285,25 @@
       margin-bottom: 24px;
     }
     
+    .engagement-examples-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--terracotta);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .engagement-note {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+    
     .engagement-card ul { list-style: none; }
     
     .engagement-card li {
@@ -1481,9 +1500,12 @@
       .engagement-card:last-child { border-bottom: none; }
       
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-      .carousel { max-width: 100%; padding: 0 48px; }
-      .carousel-arrow-prev { left: 0; }
-      .carousel-arrow-next { right: 0; }
+      .carousel { max-width: 100%; padding: 0; }
+      .carousel-arrow-prev { left: -8px; }
+      .carousel-arrow-next { right: -8px; }
+      .carousel-arrow { width: 40px; height: 40px; }
+      .carousel-arrow svg { width: 18px; height: 18px; }
+      .carousel-slide { padding: 0 6px; }
       .carousel-slide .testimonial-card { padding: 28px; }
       .carousel-slide blockquote { font-size: 15px; }
     }
@@ -1989,9 +2011,9 @@
           <h4>Challenge</h4>
           <p>The client needed stronger demand forecasting across short-term and long-term horizons. The existing long-term model took around six hours to run and required heavy manual tuning before the commercial team could trust the output. Forecast errors were compounding into material imbalance cost exposure.</p>
           <h4>What We Did</h4>
-          <p>Built both the short-term and long-term power demand forecasting models. The long-term model was rewritten in R, plugged directly into the client's database, and delivered accurate five-year-ahead forecasts in under 30 minutes with built-in data cleansing that flags anomalies for the commercial team to investigate. The short-term model was first delivered five years ago and rebuilt this year with refreshed methodology. Replaced several manual data-processing steps with scheduled Python and R jobs.</p>
+          <p>Built both the short-term and long-term power demand forecasting models. The long-term model was rewritten in R, plugged directly into the client's database, and delivered accurate five-year-ahead forecasts in under 30 minutes with built-in data cleansing that flags anomalies for the commercial team to investigate. The short-term model was first delivered in 2021, and rebuilt in 2026 with refreshed methodology. Replaced several manual data-processing steps with scheduled Python and R jobs.</p>
           <h4>Result</h4>
-          <p>Mean Absolute Percentage Error was roughly halved on both short-term and long-term builds. Imbalance costs fell by around 20 percent. The long-term run time dropped from six hours to under 30 minutes. The forecasting platform now operates with minimal manual intervention, freeing the commercial team for higher-value work.</p>
+          <p>Mean Absolute Percentage Error was roughly halved on both short-term and long-term builds. Imbalance costs fell by around 20%. The long-term run time dropped from six hours to under 30 minutes. The forecasting platform now operates with minimal manual intervention, freeing the commercial team for higher-value work.</p>
         </div>
       </div>
     </div>
@@ -2043,11 +2065,12 @@
             <h3>Sprint</h3>
             <span class="duration">2 to 4 weeks</span>
           </div>
-          <p>Short-form focused work. A specific problem, a fixed fee, a clean handover.</p>
+          <p>Best for small, surgical pieces of work with a clear scope and deliverable. Fixed fee, fast turnaround.</p>
+          <p class="engagement-examples-label">Example engagements:</p>
           <ul>
-            <li>Market education workshops for leadership and commercial teams</li>
+            <li>Market education workshop for leadership or commercial teams</li>
             <li>Perfect Foresight benchmarking to quantify asset performance</li>
-            <li>Trading due diligence on target operators or counterparties</li>
+            <li>Trading due diligence on a target operator or counterparty</li>
             <li>Vendor RFP or RFI support for ETRM and trading platform selection</li>
             <li>A specific forecasting model or trading algorithm</li>
           </ul>
@@ -2057,7 +2080,8 @@
             <h3>90-Day Delivery</h3>
             <span class="duration">One quarter</span>
           </div>
-          <p>Diagnostic plus phased implementation plan. Costed roadmap covering people, process, and platform.</p>
+          <p>Best for more complex, multi-workstream engagements that need both diagnostic and phased implementation. Costed roadmap covering people, process, and platform.</p>
+          <p class="engagement-examples-label">Example engagements:</p>
           <ul>
             <li>Route-to-market business case and internalisation roadmap</li>
             <li>Trading operating model design across front, middle, and back office</li>
@@ -2070,7 +2094,8 @@
             <h3>Retainer</h3>
             <span class="duration">Ongoing</span>
           </div>
-          <p>Fractional desk and execution support, embedded with your trading and operations teams.</p>
+          <p>Best where ongoing support is needed, whether for complex longer-running engagements or to reserve availability for ad-hoc queries — typically a few days a month, embedded with your trading and operations teams.</p>
+          <p class="engagement-examples-label">Example engagements:</p>
           <ul>
             <li>ETRM implementation oversight and post-go-live stabilisation</li>
             <li>BESS trading platform build and hardening</li>
@@ -2079,6 +2104,7 @@
           </ul>
         </div>
       </div>
+      <p class="engagement-note">Examples shown are indicative. Engagements are scoped to what you actually need.</p>
     </div>
   </section>
 
@@ -2148,7 +2174,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copy">© 2026 Ram Sky Ltd. Company No. 16000229. All rights reserved.</p>
+        <p class="footer-copy">© 2026 Ram Sky Ltd. Company No. 16000229. VAT No. 479515253. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -2324,7 +2350,7 @@
       var carousel = document.getElementById('testimonialCarousel');
       if (!carousel) return;
       var quotes = carousel.querySelectorAll('.carousel-slide blockquote');
-      var WORDS = 60;
+      var WORDS = 30;
       
       function setUp() {
         var mobile = window.matchMedia('(max-width: 768px)').matches;
