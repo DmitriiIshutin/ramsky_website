@@ -186,21 +186,92 @@
     
     .mobile-menu-btn {
       display: none;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       background: none;
       border: none;
       cursor: pointer;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       gap: 5px;
+      z-index: 1001;
+      position: relative;
     }
     
     .mobile-menu-btn span {
       display: block;
-      width: 20px;
+      width: 22px;
       height: 2px;
       background: var(--navy);
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    
+    .mobile-menu-btn.is-open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .mobile-menu-btn.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+    .mobile-menu-btn.is-open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+    
+    .mobile-menu-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 340px;
+      height: 100vh;
+      background: white;
+      box-shadow: -8px 0 40px -10px rgba(30,58,80,0.18);
+      padding: 96px 32px 40px;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .mobile-menu-panel.is-open {
+      transform: translateX(0);
+    }
+    
+    .mobile-menu-panel a {
+      display: block;
+      padding: 14px 0;
+      font-size: 17px;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(30,58,80,0.08);
+      font-weight: 500;
+    }
+    
+    .mobile-menu-panel a:last-child {
+      margin-top: 16px;
+      padding: 14px 20px;
+      background: var(--navy);
+      color: white;
+      border-radius: 2px;
+      border: none;
+      text-align: center;
+    }
+    
+    .mobile-menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 50, 0.42);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+    }
+    
+    .mobile-menu-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
     }
     
     /* Hero */
@@ -644,10 +715,78 @@
     }
     
     .ai-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
       margin-top: 56px;
+      position: relative;
+    }
+    
+    .ai-carousel-viewport {
+      overflow: hidden;
+    }
+    
+    /* Desktop: render as a 2x2 grid by overriding the track flex into a grid. */
+    @media (min-width: 769px) {
+      .ai-carousel-track {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+      .ai-carousel-arrow,
+      .ai-carousel-dots {
+        display: none;
+      }
+    }
+    
+    /* Mobile: slider track of flex items, one per view */
+    @media (max-width: 768px) {
+      .ai-carousel-track {
+        display: flex;
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+      }
+      .ai-carousel-track > .ai-card {
+        flex: 0 0 100%;
+        min-width: 0;
+        margin: 0 6px;
+      }
+      .ai-carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid rgba(30,58,80,0.15);
+        color: var(--ink);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        z-index: 2;
+        box-shadow: 0 2px 10px -4px rgba(30,58,80,0.15);
+      }
+      .ai-carousel-arrow svg { width: 18px; height: 18px; }
+      .ai-carousel-arrow-prev { left: -8px; }
+      .ai-carousel-arrow-next { right: -8px; }
+      .ai-carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 24px;
+      }
+      .ai-carousel-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(30,58,80,0.2);
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .ai-carousel-dot.is-active {
+        background: var(--terracotta);
+        transform: scale(1.25);
+      }
     }
     
     .ai-card {
@@ -840,6 +979,25 @@
     .carousel-arrow-prev { left: -22px; }
     .carousel-arrow-next { right: -22px; }
     
+    .read-more-toggle {
+      background: none;
+      border: none;
+      padding: 6px 0 0;
+      font: inherit;
+      color: var(--terracotta);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin-top: 4px;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .read-more-toggle { display: inline-block; }
+    }
+    
     .carousel-dots {
       display: flex;
       justify-content: center;
@@ -914,10 +1072,14 @@
       font-family: 'Inter', sans-serif;
       font-size: 12px;
       font-weight: 600;
-      color: var(--ink-muted);
+      color: var(--terracotta);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: 12px;
+    }
+    
+    .case-study-content h4:not(:first-child) {
+      margin-top: 4px;
     }
     
     .case-study-content p {
@@ -1029,6 +1191,16 @@
       margin-top: 16px;
       margin-bottom: 28px;
       line-height: 1.2;
+    }
+    
+    .about-subheading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 32px;
+      line-height: 1.25;
+      color: var(--navy);
+      font-weight: 500;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
     }
     
     .about-content .text {
@@ -1320,7 +1492,6 @@
       .nav-links { display: none; }
       .mobile-menu-btn { display: flex; }
       .services-grid { grid-template-columns: 1fr; }
-      .ai-grid { grid-template-columns: 1fr; gap: 24px; }
       .ai-card { padding: 28px; }
       .clients-grid { grid-template-columns: 1fr; }
       .clients-grid .client-card:last-child:nth-child(odd) {
@@ -1353,7 +1524,7 @@
           <a href="#about" class="nav-link">About</a>
           <a href="#contact" class="btn btn-primary">Get in touch <span class="arrow">→</span></a>
         </div>
-        <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenuPanel">
           <span></span>
           <span></span>
           <span></span>
@@ -1361,6 +1532,16 @@
       </div>
     </div>
   </nav>
+  
+  <!-- Mobile menu (hidden by default, shown via class toggle on hamburger click) -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <aside class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
+    <a href="#services">Services</a>
+    <a href="#approach">Approach</a>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Get in touch</a>
+  </aside>
 
   <!-- Hero -->
   <section class="hero" id="top">
@@ -1454,13 +1635,14 @@
           </ul>
         </div>
         <div class="service-card">
-          <h3>Forecasting, Quant &amp; Analytics</h3>
-          <p>Forecasting is where trading capability lives or dies. We build the models your desk actually uses: demand, price, imbalance, and triad, with the data pipelines and validation wrapped around them.</p>
+          <h3>Demand &amp; Price Forecasting, Quant &amp; Analytics</h3>
+          <p>Power and gas demand forecasting sit at the core of a profitable trading desk. We build the models your team actually runs: short and long-term demand, price, imbalance, and triad, with the data pipelines and validation wrapped around them.</p>
           <ul>
-            <li>Short-term and long-term demand forecasting</li>
+            <li>Short-term and long-term power and gas demand forecasting</li>
             <li>Imbalance and NIV forecasting, imbalance cost modelling</li>
             <li>Price forecasting for power, gas, and carbon</li>
             <li>Triad and peak-demand prediction</li>
+            <li>Perfect Foresight benchmarking for BESS and flexible assets</li>
             <li>Algorithm backtesting and performance analytics</li>
             <li>Automated data pipelines in Python and R, replacing manual steps</li>
           </ul>
@@ -1572,7 +1754,12 @@
         <h2>AI in Our Consulting Practice</h2>
         <p>We use AI tools heavily in day-to-day work. Plenty of what used to need a team of specialists we can now do ourselves, faster. Below are some of the clearer examples, though the list is not exhaustive and the toolkit changes depending on the project.</p>
       </div>
-      <div class="ai-grid">
+      <div class="ai-grid" id="aiCarousel" aria-roledescription="carousel" aria-label="AI use cases">
+        <button class="ai-carousel-arrow ai-carousel-arrow-prev" type="button" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="ai-carousel-viewport">
+          <div class="ai-carousel-track">
         <div class="ai-card">
           <div class="ai-number">01</div>
           <h3>Live dashboards instead of flowcharts</h3>
@@ -1592,6 +1779,16 @@
           <div class="ai-number">04</div>
           <h3>Agents doing the research</h3>
           <p>Every morning before 8am, local Claude Code agents run through tender portals, regulatory consultations, and trade press, and drop a one-page summary of anything relevant into our inbox. Clients tracking NESO consultations, EU REMIT updates, or looking for new tender opportunities get the benefit of this without having to run the process themselves.</p>
+          </div>
+        </div>
+        <button class="ai-carousel-arrow ai-carousel-arrow-next" type="button" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="ai-carousel-dots" role="tablist" aria-label="Select card">
+          <button class="ai-carousel-dot is-active" type="button" aria-label="Card 1" data-index="0"></button>
+          <button class="ai-carousel-dot" type="button" aria-label="Card 2" data-index="1"></button>
+          <button class="ai-carousel-dot" type="button" aria-label="Card 3" data-index="2"></button>
+          <button class="ai-carousel-dot" type="button" aria-label="Card 4" data-index="3"></button>
         </div>
       </div>
       <div class="ai-tools">
@@ -1693,7 +1890,7 @@
         </button>
         <div class="carousel-viewport">
           <div class="carousel-track">
-            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 4">
+            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 2">
               <div class="testimonial-card">
                 <blockquote>"Dmitrii and Ram Sky played an integral part overseeing the delivery of a proprietary battery trading platform, including algorithmic optimisation, controls and blueprints for operational excellence, capability management and new routes to market. Dmitrii possesses a potent combination of commerciality, technical programming expertise and project management skills. He maintains impeccably high standards for himself and everyone around him. For anyone lucky enough to consider working with him, I couldn't recommend him highly enough!"</blockquote>
                 <div class="testimonial-author">
@@ -1705,7 +1902,7 @@
                 </div>
               </div>
             </div>
-            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 4">
+            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 2">
               <div class="testimonial-card">
                 <blockquote>"Dmitrii and Ram Sky have a unique combination of commercial, technical and delivery skills. They managed to build a transformative battery platform that improved commercial performance, delivered significant levels of automation, and reduced cost to serve. Dmitrii has incredibly high standards, a flawless delivery track record and a level of energy that helps drive entire teams forward. I would rank Dmitrii amongst the very best in our business, and anyone lucky enough to have the opportunity to hire him should do so without hesitation!"</blockquote>
                 <div class="testimonial-author">
@@ -1713,30 +1910,6 @@
                   <div>
                     <div class="name">Richard Carey</div>
                     <div class="role">Automated Trading Manager, Shell</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 4">
-              <div class="testimonial-card">
-                <blockquote>"Dmitrii has built two forecasting models for us. The first was a short-term demand model five years ago, which he came back and rebuilt this year. Both builds roughly halved MAPE and cut our imbalance costs by around 20%. He also delivered a long-term model that runs in under 30 minutes rather than six hours, and flags data issues automatically so the commercial team can look into them. Would happily recommend Ram Sky to any energy supplier looking to build out its forecasting capability."</blockquote>
-                <div class="testimonial-author">
-                  <div class="photo"><span class="initials">GC</span></div>
-                  <div>
-                    <div class="name">George Christian</div>
-                    <div class="role">Head of Commercial, Yorkshire Gas and Power</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 4">
-              <div class="testimonial-card">
-                <blockquote>"Dmitrii and Ram Sky worked closely with our sales and product teams over the course of the engagement. They ran a series of demos for prospective customers, tailored the system to reflect each prospect's specific workflows, and represented Molecule at an industry conference. They also contributed thoughtful product feedback that fed directly into the roadmap, and led the subject-matter responses on several RFP and RFI processes. Would recommend Ram Sky to any ETRM or trading SaaS vendor looking to sharpen its go-to-market."</blockquote>
-                <div class="testimonial-author">
-                  <div class="photo"><span class="initials">SS</span></div>
-                  <div>
-                    <div class="name">Sameer Soleja</div>
-                    <div class="role">CEO, Molecule</div>
                   </div>
                 </div>
               </div>
@@ -1749,8 +1922,6 @@
         <div class="carousel-dots" role="tablist" aria-label="Select testimonial">
           <button class="carousel-dot is-active" type="button" aria-label="Testimonial 1" data-index="0"></button>
           <button class="carousel-dot" type="button" aria-label="Testimonial 2" data-index="1"></button>
-          <button class="carousel-dot" type="button" aria-label="Testimonial 3" data-index="2"></button>
-          <button class="carousel-dot" type="button" aria-label="Testimonial 4" data-index="3"></button>
         </div>
       </div>
     </div>
@@ -1765,38 +1936,62 @@
       </div>
       <div class="case-study">
         <div class="case-study-meta">
-          <div class="scope">300MW BESS Fleet</div>
-          <h3>Major Energy Company — GB</h3>
-          <div class="outcome">Helped client become Top-5 optimiser in Modo leaderboard</div>
+          <div class="scope">300MW+ BESS Fleet | GB</div>
+          <h3>Supermajor Energy Company</h3>
+          <div class="outcome">Top-5 on the Modo Energy BESS leaderboard. #1 in Dec-23 and Jan-24, ahead of EDF, Tesla, and bp.</div>
         </div>
         <div class="case-study-content">
           <h4>Challenge</h4>
-          <p>Build proprietary in-house Battery Trading Platform for day-ahead & intraday optimisation</p>
-          <h4>What We Delivered</h4>
-          <ul class="deliverables">
-            <li>Designed and built trading platform for position visualisation and algo management</li>
-            <li>Created intraday volume churn algorithm</li>
-            <li>Built triad forecasting model predicting 2/3 triads correctly</li>
-            <li>Developed reporting layer for operational and trading performance</li>
-          </ul>
+          <p>The client needed a proprietary in-house Battery Trading Platform for one of GB's largest BESS portfolios, covering day-ahead, intraday, and Balancing Mechanism optimisation with trader-grade UI, algorithms, and reporting.</p>
+          <h4>What We Did</h4>
+          <p>Product-managed the design and development across front-end, back-end, and algorithm layers. Owned the short-term battery trading transformation roadmap: 40+ projects across five teams covering long-term hedging, day-ahead and intraday trading, Balancing Mechanism automation, triad forecasting, and performance reporting. Built the intraday volume churn and triad forecasting modules directly.</p>
+          <h4>Result</h4>
+          <p>The platform took the fleet from 8th to #1 on the Modo Energy BESS leaderboard in Dec-23 and Jan-24, ahead of EDF, Tesla, and bp. Two of three triads predicted correctly across two consecutive years. The portfolio now underpins a £20m+ annual revenue line with a team of four running on the platform.</p>
         </div>
       </div>
       <div class="case-study">
         <div class="case-study-meta">
-          <div class="scope">120MW live, 1GW pipeline</div>
-          <h3>Renewable Asset Developer — Germany</h3>
-          <div class="outcome">Fully costed roadmap for internalising trading operations</div>
+          <div class="scope">600MW BESS + 150MW Peakers | GB</div>
+          <h3>Large GB BESS Owner and Operator</h3>
+          <div class="outcome">End-to-end trading desk stood up. Strategic architecture signed off by the CEO as the basis for the go-live investment decision.</div>
         </div>
         <div class="case-study-content">
           <h4>Challenge</h4>
-          <p>Route-to-market orchestration and trading IT setup for European BESS expansion</p>
-          <h4>What We Delivered</h4>
-          <ul class="deliverables">
-            <li>EPEX & NordPool exchange registrations</li>
-            <li>Elexon BSC accession</li>
-            <li>ECC and clearing bank arrangements</li>
-            <li>Costed roadmap — people, processes & platforms</li>
-          </ul>
+          <p>The client operated one of the largest BESS portfolios in GB through a third-party optimiser and wanted to internalise trading. The route-to-market decisions would define margin capture and operational control for the next decade, so the business case, the systems architecture, and the programme sequencing all had to hold up to board-level scrutiny before the first trade was placed.</p>
+          <h4>What We Did</h4>
+          <p>Led the full internalisation programme end to end. Designed the systems architecture and business process map covering trading, optimisation, scheduling, settlement, and risk, and presented it to the CEO and senior leadership as the basis for the go or no-go investment decision. Built the full cost model and build-vs-buy analysis across the trading stack, produced a phased hiring plan, ran vendor selection across back, middle, and front office systems, onboarded ETRM and EDT/EDL trading infrastructure, and led EPEX and Nord Pool exchange registration, Elexon CVA Qualification, ECC clearing arrangements, and Balancing Mechanism participation onboarding.</p>
+          <h4>Result</h4>
+          <p>The client has a fully stood-up trading operation: external market access on one side, internal IT and trading software on the other, costed and sequenced so leadership can pace investment against portfolio growth. Traders could test algorithms against live market data on the new stack before a single MW was dispatched in-house, turning a multi-year decade-long commitment into a decision the CEO could actually sign off on.</p>
+        </div>
+      </div>
+      <div class="case-study">
+        <div class="case-study-meta">
+          <div class="scope">120MW live + 1GW pipeline | Germany</div>
+          <h3>European IPP Entering German BESS</h3>
+          <div class="outcome">Platform design handed to engineering with no translation layer. Dashboard served as the living reference through the build.</div>
+        </div>
+        <div class="case-study-content">
+          <h4>Challenge</h4>
+          <p>The client was entering the German BESS market with 120MW live and a 1GW pipeline, and needed an in-house trading platform design the trading team could actually build from. Existing design artefacts, where they existed, were static Miro flowcharts that broke down as soon as the platform scope grew.</p>
+          <h4>What We Did</h4>
+          <p>Designed the UI/UX, data architecture, and business process map for the full trading platform. Built an interactive Google AI Studio dashboard mapping ancillary service flows, data maps, and asset-to-trade dependencies, navigable in real time. Produced a German BESS market composition and revenue-stacking research piece for the CTO and Platform Manager to size the opportunity. Mapped the trader-facing alerts framework end to end from asset telemetry through to trade execution.</p>
+          <h4>Result</h4>
+          <p>The full platform specification handed to engineering was complete enough that implementation could start without a translation layer. The dashboard became the team's working reference throughout the build phase rather than an artefact that gets filed after sign-off.</p>
+        </div>
+      </div>
+      <div class="case-study">
+        <div class="case-study-meta">
+          <div class="scope">UK Energy Supplier</div>
+          <h3>Growing UK Energy Supplier</h3>
+          <div class="outcome">Mean Absolute Percentage Error roughly halved. Imbalance cost exposure reduced by an estimated 15 to 25 percent.</div>
+        </div>
+        <div class="case-study-content">
+          <h4>Challenge</h4>
+          <p>The client needed stronger demand forecasting across short-term and long-term horizons. The existing long-term model took around six hours to run and required heavy manual tuning before the commercial team could trust the output. Forecast errors were compounding into material imbalance cost exposure.</p>
+          <h4>What We Did</h4>
+          <p>Built both the short-term and long-term power demand forecasting models. The long-term model was rewritten in R, plugged directly into the client's database, and delivered accurate five-year-ahead forecasts in under 30 minutes with built-in data cleansing that flags anomalies for the commercial team to investigate. The short-term model was first delivered five years ago and rebuilt this year with refreshed methodology. Replaced several manual data-processing steps with scheduled Python and R jobs.</p>
+          <h4>Result</h4>
+          <p>Mean Absolute Percentage Error was roughly halved on both short-term and long-term builds. Imbalance costs fell by around 20 percent. The long-term run time dropped from six hours to under 30 minutes. The forecasting platform now operates with minimal manual intervention, freeing the commercial team for higher-value work.</p>
         </div>
       </div>
     </div>
@@ -1805,6 +2000,10 @@
   <!-- About -->
   <section class="about" id="about">
     <div class="container">
+      <div class="section-header">
+        <p class="section-label">Who We Are</p>
+        <h2>About Ram Sky</h2>
+      </div>
       <div class="about-grid">
         <div>
           <figure class="founder-photo">
@@ -1819,11 +2018,10 @@
           </div>
         </div>
         <div class="about-content">
-          <p class="section-label">About Ram Sky</p>
-          <h2>A quant-turned-energy-trader-turned-consultant with over a decade across European power markets</h2>
+          <h3 class="about-subheading">A quant-turned-energy-trader-turned-consultant with over a decade across European power markets</h3>
           <div class="text">
             <p>Ram Sky exists to close the gap between strategic advisory and hands-on delivery in energy trading. As a power & carbon curve trader at <span class="highlight">EDF Energy</span>, our founder delivered a <span class="highlight">£10m P&L</span>; at <span class="highlight">Shell</span>, he built the proprietary Battery Trading Platform underpinning a <span class="highlight">£20m annual revenue</span> portfolio.</p>
-            <p>We engage Outside IR35 in the UK and on a project basis for clients elsewhere. In both models, you work directly with a practitioner who has traded the markets in question, without the overhead of a traditional consultancy.</p>
+            <p>We engage on a project basis with clients worldwide. In the UK, we also operate under the Outside IR35 framework. Either way, you work directly with a practitioner who has traded the markets in question, without the overhead of a traditional consultancy.</p>
             <p>The remit is simple: profitable, compliant trading capability, from idea to live P&L.</p>
           </div>
         </div>
@@ -1843,14 +2041,15 @@
         <div class="engagement-card">
           <div class="engagement-card-header">
             <h3>Sprint</h3>
-            <span class="duration">2–4 weeks</span>
+            <span class="duration">2 to 4 weeks</span>
           </div>
-          <p>Focused delivery on a specific deliverable: an algo, a vendor RFP, a market-access workstream.</p>
+          <p>Short-form focused work. A specific problem, a fixed fee, a clean handover.</p>
           <ul>
-            <li>Clarify target outcomes and success metrics</li>
-            <li>Agree fixed or outcome-based fee</li>
-            <li>Build trading infrastructure, forecasting models, or prototypes</li>
-            <li>Handover with documentation and knowledge transfer</li>
+            <li>Market education workshops for leadership and commercial teams</li>
+            <li>Perfect Foresight benchmarking to quantify asset performance</li>
+            <li>Trading due diligence on target operators or counterparties</li>
+            <li>Vendor RFP or RFI support for ETRM and trading platform selection</li>
+            <li>A specific forecasting model or trading algorithm</li>
           </ul>
         </div>
         <div class="engagement-card">
@@ -1858,12 +2057,12 @@
             <h3>90-Day Delivery</h3>
             <span class="duration">One quarter</span>
           </div>
-          <p>Diagnostic plus phased implementation plan with costed people, process and platform recommendations.</p>
+          <p>Diagnostic plus phased implementation plan. Costed roadmap covering people, process, and platform.</p>
           <ul>
-            <li>30-minute discovery call to establish fit</li>
-            <li>Joint working sessions to shape the engagement</li>
-            <li>Map scope, timelines and required stakeholders</li>
-            <li>Regular check-ins and clear written updates</li>
+            <li>Route-to-market business case and internalisation roadmap</li>
+            <li>Trading operating model design across front, middle, and back office</li>
+            <li>Forecasting system redesign for energy suppliers</li>
+            <li>BESS trading platform scoping, vendor selection, and delivery plan</li>
           </ul>
         </div>
         <div class="engagement-card">
@@ -1871,12 +2070,12 @@
             <h3>Retainer</h3>
             <span class="duration">Ongoing</span>
           </div>
-          <p>Fractional desk and execution support — embedded with your trading and operations teams.</p>
+          <p>Fractional desk and execution support, embedded with your trading and operations teams.</p>
           <ul>
-            <li>Kick-off with agreed scope, roles and cadence</li>
-            <li>We execute, you get measurable progress</li>
-            <li>Regular check-ins and clear written updates</li>
-            <li>Working solution, documentation, knowledge transfer</li>
+            <li>ETRM implementation oversight and post-go-live stabilisation</li>
+            <li>BESS trading platform build and hardening</li>
+            <li>Ongoing demand and price forecasting support</li>
+            <li>Continuous trading due diligence for active investor mandates</li>
           </ul>
         </div>
       </div>
@@ -2026,6 +2225,147 @@
         startX = null;
         currentX = null;
       });
+    })();
+    
+    // --- Mobile menu toggle ---
+    (function() {
+      var btn = document.querySelector('.mobile-menu-btn');
+      var panel = document.getElementById('mobileMenuPanel');
+      var overlay = document.getElementById('mobileMenuOverlay');
+      if (!btn || !panel || !overlay) return;
+      
+      function closeMenu() {
+        btn.classList.remove('is-open');
+        panel.classList.remove('is-open');
+        overlay.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        panel.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      function openMenu() {
+        btn.classList.add('is-open');
+        panel.classList.add('is-open');
+        overlay.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        panel.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      btn.addEventListener('click', function() {
+        if (panel.classList.contains('is-open')) { closeMenu(); } else { openMenu(); }
+      });
+      overlay.addEventListener('click', closeMenu);
+      // Close when a menu link is clicked
+      panel.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', closeMenu);
+      });
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && panel.classList.contains('is-open')) closeMenu();
+      });
+    })();
+    
+    // --- AI mobile carousel ---
+    (function() {
+      var carousel = document.getElementById('aiCarousel');
+      if (!carousel) return;
+      var track = carousel.querySelector('.ai-carousel-track');
+      var slides = carousel.querySelectorAll('.ai-card');
+      var prev = carousel.querySelector('.ai-carousel-arrow-prev');
+      var next = carousel.querySelector('.ai-carousel-arrow-next');
+      var dots = carousel.querySelectorAll('.ai-carousel-dot');
+      var index = 0;
+      var total = slides.length;
+      
+      function isMobile() { return window.matchMedia('(max-width: 768px)').matches; }
+      
+      function goTo(i) {
+        if (!isMobile()) return;
+        index = ((i % total) + total) % total;
+        track.style.transform = 'translateX(' + (-index * 100) + '%)';
+        dots.forEach(function(d, di) {
+          d.classList.toggle('is-active', di === index);
+        });
+      }
+      
+      prev.addEventListener('click', function() { goTo(index - 1); });
+      next.addEventListener('click', function() { goTo(index + 1); });
+      dots.forEach(function(dot, di) {
+        dot.addEventListener('click', function() { goTo(di); });
+      });
+      
+      // Touch swipe
+      var startX = null, currentX = null, threshold = 50;
+      track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchmove', function(e) { currentX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', function() {
+        if (startX === null || currentX === null) { startX = null; currentX = null; return; }
+        var delta = currentX - startX;
+        if (Math.abs(delta) > threshold) {
+          if (delta < 0) goTo(index + 1); else goTo(index - 1);
+        }
+        startX = null;
+        currentX = null;
+      });
+      
+      // Reset transform when switching between mobile/desktop
+      window.addEventListener('resize', function() {
+        if (!isMobile()) {
+          track.style.transform = '';
+          index = 0;
+          dots.forEach(function(d, di) { d.classList.toggle('is-active', di === 0); });
+        } else {
+          goTo(index);
+        }
+      });
+    })();
+    
+    // --- Testimonial Read more (mobile only) ---
+    (function() {
+      var carousel = document.getElementById('testimonialCarousel');
+      if (!carousel) return;
+      var quotes = carousel.querySelectorAll('.carousel-slide blockquote');
+      var WORDS = 60;
+      
+      function setUp() {
+        var mobile = window.matchMedia('(max-width: 768px)').matches;
+        quotes.forEach(function(bq) {
+          var original = bq.getAttribute('data-full') || bq.textContent;
+          bq.setAttribute('data-full', original);
+          // remove any prior toggle
+          var existing = bq.parentNode.querySelector('.read-more-toggle');
+          if (existing) existing.remove();
+          
+          if (!mobile) {
+            bq.textContent = original;
+            return;
+          }
+          
+          var words = original.trim().split(/\s+/);
+          if (words.length <= WORDS) {
+            bq.textContent = original;
+            return;
+          }
+          var truncated = words.slice(0, WORDS).join(' ') + '…';
+          bq.textContent = truncated;
+          
+          var toggle = document.createElement('button');
+          toggle.className = 'read-more-toggle';
+          toggle.type = 'button';
+          toggle.textContent = 'Read more';
+          toggle.addEventListener('click', function() {
+            if (toggle.textContent === 'Read more') {
+              bq.textContent = original;
+              toggle.textContent = 'Read less';
+            } else {
+              bq.textContent = truncated;
+              toggle.textContent = 'Read more';
+            }
+          });
+          bq.parentNode.insertBefore(toggle, bq.nextSibling);
+        });
+      }
+      setUp();
+      window.addEventListener('resize', setUp);
     })();
   </script>
 </body>
