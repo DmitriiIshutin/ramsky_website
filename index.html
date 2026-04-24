@@ -746,11 +746,17 @@
       .ai-carousel-track > .ai-card {
         flex: 0 0 100%;
         min-width: 0;
-        margin: 0 6px;
+        margin: 0;
+      }
+      #aiCarousel {
+        position: relative;
+      }
+      .ai-carousel-viewport {
+        position: relative;
       }
       .ai-carousel-arrow {
         position: absolute;
-        top: calc(50% - 24px);
+        top: 50%;
         transform: translateY(-50%);
         width: 40px;
         height: 40px;
@@ -770,17 +776,21 @@
       .ai-carousel-dots {
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 10px;
         margin-top: 24px;
+        padding: 4px 0;
       }
       .ai-carousel-dot {
-        width: 9px;
-        height: 9px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         border: none;
         background: rgba(30,58,80,0.2);
         cursor: pointer;
         padding: 0;
+        margin: 0;
+        flex-shrink: 0;
         transition: background 0.2s, transform 0.2s;
       }
       .ai-carousel-dot.is-active {
@@ -896,9 +906,10 @@
       padding: 48px;
       border-left: 4px solid var(--terracotta);
       box-shadow: 0 4px 24px -8px rgba(30,58,80,0.08);
-      height: 100%;
       box-sizing: border-box;
     }
+    
+    .carousel-track { align-items: flex-start; }
     
     .carousel-slide blockquote {
       font-size: 17px;
@@ -1033,83 +1044,146 @@
       background: var(--sky-soft);
     }
     
-    .case-study {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 56px;
-      padding: 48px;
-      background: white;
-      border-left: 4px solid var(--terracotta);
-      margin-bottom: 32px;
+    .case-accordion {
+      max-width: 960px;
+      margin: 56px auto 0;
     }
     
-    .case-study-meta .scope {
-      font-size: 12px;
+    .case-row {
+      background: white;
+      border: 1px solid rgba(30,58,80,0.08);
+      border-radius: 4px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.25s ease;
+    }
+    
+    .case-row.is-open {
+      box-shadow: 0 8px 32px -12px rgba(30,58,80,0.18);
+      border-color: var(--navy);
+    }
+    
+    .case-head {
+      display: grid;
+      grid-template-columns: 260px 1fr 40px;
+      gap: 24px;
+      align-items: center;
+      padding: 22px 28px;
+      width: 100%;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    
+    .case-head:hover {
+      background: rgba(197,90,60,0.04);
+    }
+    
+    .case-row.is-open .case-head,
+    .case-row.is-open .case-head:hover {
+      background: var(--navy);
+    }
+    
+    .case-scope {
+      font-size: 11px;
       font-weight: 600;
-      color: var(--terracotta);
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      color: var(--terracotta);
+      transition: color 0.2s ease;
     }
     
-    .case-study-meta h3 {
-      font-size: 26px;
+    .case-row.is-open .case-scope {
+      color: #F5A48A;
+    }
+    
+    .case-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 500;
       color: var(--navy);
-      margin-bottom: 20px;
-      line-height: 1.2;
+      line-height: 1.3;
+      transition: color 0.2s ease;
     }
     
-    .case-study-meta .outcome {
-      padding: 20px;
-      background: var(--navy);
+    .case-row.is-open .case-title {
       color: white;
+    }
+    
+    .case-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--ink-muted);
+      justify-self: end;
+      transition: transform 0.25s ease, color 0.2s ease;
+      transform: rotate(0deg);
+    }
+    
+    .case-row.is-open .case-chevron {
+      transform: rotate(90deg);
+      color: white;
+    }
+    
+    .case-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      background: white;
+      transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .case-row.is-open .case-body {
+      grid-template-rows: 1fr;
+    }
+    
+    .case-body-inner {
+      min-height: 0;
+      overflow: hidden;
+      padding: 0 28px;
+      opacity: 0;
+      transition: opacity 0.2s ease, padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .case-row.is-open .case-body-inner {
+      padding: 24px 28px 32px;
+      opacity: 1;
+      transition: opacity 0.25s ease 0.1s, padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .case-outcome {
+      display: block;
+      color: var(--navy);
       font-size: 15px;
       font-weight: 500;
       line-height: 1.5;
+      padding: 0 0 18px;
+      margin: 0 0 20px;
+      border-bottom: 2px solid var(--terracotta);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
     }
     
-    .case-study-content h4 {
+    .case-body h4 {
       font-family: 'Inter', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--terracotta);
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 12px;
+      margin: 20px 0 8px;
     }
     
-    .case-study-content h4:not(:first-child) {
-      margin-top: 4px;
+    .case-body h4:first-of-type {
+      margin-top: 8px;
     }
     
-    .case-study-content p {
-      font-size: 16px;
+    .case-body p {
+      font-size: 15px;
+      line-height: 1.75;
       color: var(--ink);
-      margin-bottom: 28px;
-      line-height: 1.7;
-    }
-    
-    .deliverables {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px 24px;
-      list-style: none;
-    }
-    
-    .deliverables li {
-      font-size: 14px;
-      color: var(--ink);
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 8px 0;
-    }
-    
-    .deliverables li::before {
-      content: "✓";
-      color: var(--terracotta);
-      font-weight: 600;
-      margin-top: 1px;
+      margin-bottom: 0;
     }
     
     /* About */
@@ -1245,18 +1319,37 @@
     .engagement-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1px solid var(--rule);
-      background: white;
-      margin-top: 48px;
+      gap: 20px;
+      margin-top: 0;
     }
     
     .engagement-card {
-      padding: 40px 32px;
-      border-right: 1px solid var(--rule);
+      padding: 48px 32px 40px;
+      background: white;
+      border: 1px solid rgba(30,58,80,0.1);
+      border-radius: 4px;
+      transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+      position: relative;
     }
     
-    .engagement-card:last-child { border-right: none; }
+    .engagement-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--terracotta);
+    }
+    
+    .engagement-card:nth-child(2)::before { background: #8A4A2E; }
+    .engagement-card:nth-child(3)::before { background: var(--navy); }
+    
+    .engagement-card:hover {
+      box-shadow: 0 14px 40px -14px rgba(30,58,80,0.22);
+      border-color: rgba(30,58,80,0.2);
+      transform: translateY(-2px);
+    }
     
     .engagement-card-header {
       display: flex;
@@ -1280,28 +1373,22 @@
     
     .engagement-card > p {
       font-size: 14px;
-      color: var(--ink-muted);
+      color: var(--ink);
       line-height: 1.7;
       margin-bottom: 24px;
     }
     
-    .engagement-examples-label {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--terracotta);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 20px;
-      margin-bottom: 10px;
-    }
-    
     .engagement-note {
       text-align: center;
-      margin-top: 40px;
+      margin-top: 0;
+      margin-bottom: 20px;
       font-size: 14px;
       color: var(--ink-muted);
       font-style: italic;
+    }
+    
+    .engagement .section-header {
+      margin-bottom: 16px;
     }
     
     .engagement-card ul { list-style: none; }
@@ -1370,6 +1457,12 @@
       justify-content: center;
       flex-wrap: wrap;
       margin-top: 36px;
+    }
+    
+    .contact-buttons .btn {
+      min-width: 280px;
+      justify-content: center;
+      text-align: center;
     }
     
     .contact-buttons .btn-terracotta { padding: 16px 28px; }
@@ -1496,8 +1589,6 @@
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
       
       .engagement-grid { grid-template-columns: 1fr; }
-      .engagement-card { border-right: none; border-bottom: 1px solid var(--rule); }
-      .engagement-card:last-child { border-bottom: none; }
       
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
       .carousel { max-width: 100%; padding: 0; }
@@ -1522,8 +1613,44 @@
         max-width: none;
         width: auto;
       }
-      .case-study { grid-template-columns: 1fr; gap: 32px; }
-      .deliverables { grid-template-columns: 1fr; }
+      .case-accordion { margin-top: 40px; }
+      .case-head {
+        grid-template-columns: 1fr 32px;
+        grid-template-rows: auto auto;
+        column-gap: 12px;
+        row-gap: 4px;
+        padding: 16px 18px;
+      }
+      .case-scope {
+        grid-column: 1;
+        grid-row: 1;
+        margin-bottom: 0;
+        font-size: 10px;
+      }
+      .case-title {
+        grid-column: 1;
+        grid-row: 2;
+        font-size: 16px;
+      }
+      .case-chevron {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: center;
+        justify-self: end;
+      }
+      .case-body-inner {
+        padding: 0 18px;
+      }
+      .case-row.is-open .case-body-inner {
+        padding: 20px 18px 24px;
+      }
+      .case-body h4 { margin: 16px 0 6px; }
+      .case-body p { font-size: 14px; }
+      .case-outcome {
+        font-size: 14px;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+      }
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
@@ -1542,7 +1669,7 @@
         <div class="nav-links">
           <a href="#services" class="nav-link">Services</a>
           <a href="#approach" class="nav-link">Approach</a>
-          <a href="#work" class="nav-link">Work</a>
+          <a href="#work" class="nav-link">Case Studies</a>
           <a href="#about" class="nav-link">About</a>
           <a href="#contact" class="btn btn-primary">Get in touch <span class="arrow">→</span></a>
         </div>
@@ -1560,7 +1687,7 @@
   <aside class="mobile-menu-panel" id="mobileMenuPanel" aria-hidden="true">
     <a href="#services">Services</a>
     <a href="#approach">Approach</a>
-    <a href="#work">Work</a>
+    <a href="#work">Case Studies</a>
     <a href="#about">About</a>
     <a href="#contact">Get in touch</a>
   </aside>
@@ -1782,25 +1909,26 @@
         </button>
         <div class="ai-carousel-viewport">
           <div class="ai-carousel-track">
-        <div class="ai-card">
-          <div class="ai-number">01</div>
-          <h3>Live dashboards instead of flowcharts</h3>
-          <p>Traditional flowcharts are easy to draw and hard to use. Once a platform design hits real complexity, a static Miro page becomes a wall of boxes nobody can trace. For an IPP planning its German BESS expansion, we replaced that pattern with an interactive dashboard built in Google AI Studio: a navigable view of ancillary service flows, data maps, and asset-to-trade dependencies. The CTO and Platform Manager got a reference they could explore in real time, and the design handed over to implementation without the usual translation layer.</p>
-        </div>
-        <div class="ai-card">
-          <div class="ai-number">02</div>
-          <h3>Working prototypes instead of mockups</h3>
-          <p>On the same engagement, the trading desk needed an alerting framework covering every signal from asset telemetry through to trade execution. The conventional approach would have been a Figma spec, a UI agency, and a written specification document reviewed over several weeks. Instead, we used ChatGPT to build a working prototype of the interface, hosted it on a VM, and gave the CTO a live link to share internally. Stakeholders interacted with the prototype directly rather than reading about it, and the feedback loop with traders closed in a single working session.</p>
-        </div>
-        <div class="ai-card">
-          <div class="ai-number">03</div>
-          <h3>Slides, faster</h3>
-          <p>A good deck compresses strategy, market context, and the numbers that underpin both into something a CEO or investment committee can act on. Claude in PowerPoint takes over the mechanical part of slide building, so more of the engagement goes into the insight and less into fighting the template.</p>
-        </div>
-        <div class="ai-card">
-          <div class="ai-number">04</div>
-          <h3>Agents doing the research</h3>
-          <p>Every morning before 8am, local Claude Code agents run through tender portals, regulatory consultations, and trade press, and drop a one-page summary of anything relevant into our inbox. Clients tracking NESO consultations, EU REMIT updates, or looking for new tender opportunities get the benefit of this without having to run the process themselves.</p>
+            <div class="ai-card">
+              <div class="ai-number">01</div>
+              <h3>Live dashboards instead of flowcharts</h3>
+              <p>Traditional flowcharts are easy to draw and hard to use. Once a platform design hits real complexity, a static Miro page becomes a wall of boxes nobody can trace. For an IPP planning its German BESS expansion, we replaced that pattern with an interactive dashboard built in Google AI Studio: a navigable view of ancillary service flows, data maps, and asset-to-trade dependencies. The CTO and Platform Manager got a reference they could explore in real time, and the design handed over to implementation without the usual translation layer.</p>
+            </div>
+            <div class="ai-card">
+              <div class="ai-number">02</div>
+              <h3>Working prototypes instead of mockups</h3>
+              <p>On the same engagement, the trading desk needed an alerting framework covering every signal from asset telemetry through to trade execution. The conventional approach would have been a Figma spec, a UI agency, and a written specification document reviewed over several weeks. Instead, we used ChatGPT to build a working prototype of the interface, hosted it on a VM, and gave the CTO a live link to share internally. Stakeholders interacted with the prototype directly rather than reading about it, and the feedback loop with traders closed in a single working session.</p>
+            </div>
+            <div class="ai-card">
+              <div class="ai-number">03</div>
+              <h3>Slides, faster</h3>
+              <p>A good deck compresses strategy, market context, and the numbers that underpin both into something a CEO or investment committee can act on. Claude in PowerPoint takes over the mechanical part of slide building, so more of the engagement goes into the insight and less into fighting the template.</p>
+            </div>
+            <div class="ai-card">
+              <div class="ai-number">04</div>
+              <h3>Agents doing the research</h3>
+              <p>Every morning before 8am, local Claude Code agents run through tender portals, regulatory consultations, and trade press, and drop a one-page summary of anything relevant into our inbox. Clients tracking NESO consultations, EU REMIT updates, or looking for new tender opportunities get the benefit of this without having to run the process themselves.</p>
+            </div>
           </div>
         </div>
         <button class="ai-carousel-arrow ai-carousel-arrow-next" type="button" aria-label="Next">
@@ -1912,7 +2040,7 @@
         </button>
         <div class="carousel-viewport">
           <div class="carousel-track">
-            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 2">
+            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
               <div class="testimonial-card">
                 <blockquote>"Dmitrii and Ram Sky played an integral part overseeing the delivery of a proprietary battery trading platform, including algorithmic optimisation, controls and blueprints for operational excellence, capability management and new routes to market. Dmitrii possesses a potent combination of commerciality, technical programming expertise and project management skills. He maintains impeccably high standards for himself and everyone around him. For anyone lucky enough to consider working with him, I couldn't recommend him highly enough!"</blockquote>
                 <div class="testimonial-author">
@@ -1924,14 +2052,26 @@
                 </div>
               </div>
             </div>
-            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 2">
+            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
               <div class="testimonial-card">
                 <blockquote>"Dmitrii and Ram Sky have a unique combination of commercial, technical and delivery skills. They managed to build a transformative battery platform that improved commercial performance, delivered significant levels of automation, and reduced cost to serve. Dmitrii has incredibly high standards, a flawless delivery track record and a level of energy that helps drive entire teams forward. I would rank Dmitrii amongst the very best in our business, and anyone lucky enough to have the opportunity to hire him should do so without hesitation!"</blockquote>
                 <div class="testimonial-author">
                   <div class="photo"><span class="initials">RC</span></div>
                   <div>
                     <div class="name">Richard Carey</div>
-                    <div class="role">Automated Trading Manager, Shell</div>
+                    <div class="role">Automated Trading Capability Lead, Shell</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
+              <div class="testimonial-card">
+                <blockquote>"Dmitrii and Ram Sky have built two forecasting models for us. The first was a short-term demand model five years ago, which he came back and rebuilt this year. Both builds roughly halved MAPE and cut our imbalance costs by around 20%. He also delivered a long-term model that runs in under 1 hr rather than six, and flags data issues automatically so the commercial team can look into them. The team at Ram Sky are extremely professional and a pleasure to work with. Communication was clear and consistent throughout, and they were always approachable, responsive, and personable. The whole process felt seamless, and I would happily recommend Ram Sky to any energy industry participant looking to build out its forecasting capability."</blockquote>
+                <div class="testimonial-author">
+                  <div class="photo"><span class="initials">GC</span></div>
+                  <div>
+                    <div class="name">George Christian</div>
+                    <div class="role">Head of Commercial, Yorkshire Gas and Power</div>
                   </div>
                 </div>
               </div>
@@ -1944,6 +2084,7 @@
         <div class="carousel-dots" role="tablist" aria-label="Select testimonial">
           <button class="carousel-dot is-active" type="button" aria-label="Testimonial 1" data-index="0"></button>
           <button class="carousel-dot" type="button" aria-label="Testimonial 2" data-index="1"></button>
+          <button class="carousel-dot" type="button" aria-label="Testimonial 3" data-index="2"></button>
         </div>
       </div>
     </div>
@@ -1956,64 +2097,78 @@
         <p class="section-label">Track Record</p>
         <h2>Case Studies</h2>
       </div>
-      <div class="case-study">
-        <div class="case-study-meta">
-          <div class="scope">300MW+ BESS Fleet | GB</div>
-          <h3>Supermajor Energy Company</h3>
-          <div class="outcome">Top-5 on the Modo Energy BESS leaderboard. #1 in Dec-23 and Jan-24, ahead of EDF, Tesla, and bp.</div>
+      <div class="case-accordion">
+        <div class="case-row is-open">
+          <button class="case-head" type="button" aria-expanded="true">
+            <span class="case-scope">300MW+ BESS Fleet | GB</span>
+            <span class="case-title">Energy supermajor building BESS trading platform</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <div class="case-outcome">Top-5 on the Modo Energy BESS leaderboard. #1 in Dec-23 and Jan-24, ahead of EDF, Tesla, and bp.</div>
+            <h4>Challenge</h4>
+            <p>The client needed a proprietary in-house Battery Trading Platform for one of GB's largest BESS portfolios, covering day-ahead, intraday, and Balancing Mechanism optimisation with trader-grade UI, algorithms, and reporting.</p>
+            <h4>What We Did</h4>
+            <p>Product-managed the design and development across front-end, back-end, and algorithm layers. Owned the short-term battery trading transformation roadmap: 40+ projects across five teams covering long-term hedging, day-ahead and intraday trading, Balancing Mechanism automation, triad forecasting, and performance reporting. Built the intraday volume churn and triad forecasting modules directly.</p>
+            <h4>Result</h4>
+            <p>The platform took the fleet from 8th to #1 on the Modo Energy BESS leaderboard in Dec-23 and Jan-24, ahead of EDF, Tesla, and bp. Two of three triads predicted correctly across two consecutive years. The portfolio now underpins a £20m+ annual revenue line with a team of four running on the platform.</p>
+            </div>
+          </div>
         </div>
-        <div class="case-study-content">
-          <h4>Challenge</h4>
-          <p>The client needed a proprietary in-house Battery Trading Platform for one of GB's largest BESS portfolios, covering day-ahead, intraday, and Balancing Mechanism optimisation with trader-grade UI, algorithms, and reporting.</p>
-          <h4>What We Did</h4>
-          <p>Product-managed the design and development across front-end, back-end, and algorithm layers. Owned the short-term battery trading transformation roadmap: 40+ projects across five teams covering long-term hedging, day-ahead and intraday trading, Balancing Mechanism automation, triad forecasting, and performance reporting. Built the intraday volume churn and triad forecasting modules directly.</p>
-          <h4>Result</h4>
-          <p>The platform took the fleet from 8th to #1 on the Modo Energy BESS leaderboard in Dec-23 and Jan-24, ahead of EDF, Tesla, and bp. Two of three triads predicted correctly across two consecutive years. The portfolio now underpins a £20m+ annual revenue line with a team of four running on the platform.</p>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">600MW BESS + 150MW Peakers | GB</span>
+            <span class="case-title">Large GB BESS owner internalising trading</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <div class="case-outcome">End-to-end trading desk stood up. Strategic architecture signed off by the CEO as the basis for the go-live investment decision.</div>
+            <h4>Challenge</h4>
+            <p>The client operated one of the largest BESS portfolios in GB through a third-party optimiser and wanted to internalise trading. The route-to-market decisions would define margin capture and operational control for the next decade, so the business case, the systems architecture, and the programme sequencing all had to hold up to board-level scrutiny before the first trade was placed.</p>
+            <h4>What We Did</h4>
+            <p>Led the full internalisation programme end to end. Designed the systems architecture and business process map covering trading, optimisation, scheduling, settlement, and risk, and presented it to the CEO and senior leadership as the basis for the go or no-go investment decision. Built the full cost model and build-vs-buy analysis across the trading stack, produced a phased hiring plan, ran vendor selection across back, middle, and front office systems, onboarded ETRM and EDT/EDL trading infrastructure, and led EPEX and Nord Pool exchange registration, Elexon CVA Qualification, ECC clearing arrangements, and Balancing Mechanism participation onboarding.</p>
+            <h4>Result</h4>
+            <p>The client has a fully stood-up trading operation: external market access on one side, internal IT and trading software on the other, costed and sequenced so leadership can pace investment against portfolio growth. Traders could test algorithms against live market data on the new stack before a single MW was dispatched in-house, turning a multi-year decade-long commitment into a decision the CEO could actually sign off on.</p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="case-study">
-        <div class="case-study-meta">
-          <div class="scope">600MW BESS + 150MW Peakers | GB</div>
-          <h3>Large GB BESS Owner and Operator</h3>
-          <div class="outcome">End-to-end trading desk stood up. Strategic architecture signed off by the CEO as the basis for the go-live investment decision.</div>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">120MW live + 1GW pipeline | Germany</span>
+            <span class="case-title">European IPP entering German BESS</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <div class="case-outcome">Platform design handed to engineering with no translation layer. Dashboard served as the living reference through the build.</div>
+            <h4>Challenge</h4>
+            <p>The client was entering the German BESS market with 120MW live and a 1GW pipeline, and needed an in-house trading platform design the trading team could actually build from. Existing design artefacts, where they existed, were static Miro flowcharts that broke down as soon as the platform scope grew.</p>
+            <h4>What We Did</h4>
+            <p>Designed the UI/UX, data architecture, and business process map for the full trading platform. Built an interactive Google AI Studio dashboard mapping ancillary service flows, data maps, and asset-to-trade dependencies, navigable in real time. Produced a German BESS market composition and revenue-stacking research piece for the CTO and Platform Manager to size the opportunity. Mapped the trader-facing alerts framework end to end from asset telemetry through to trade execution.</p>
+            <h4>Result</h4>
+            <p>The full platform specification handed to engineering was complete enough that implementation could start without a translation layer. The dashboard became the team's working reference throughout the build phase rather than an artefact that gets filed after sign-off.</p>
+            </div>
+          </div>
         </div>
-        <div class="case-study-content">
-          <h4>Challenge</h4>
-          <p>The client operated one of the largest BESS portfolios in GB through a third-party optimiser and wanted to internalise trading. The route-to-market decisions would define margin capture and operational control for the next decade, so the business case, the systems architecture, and the programme sequencing all had to hold up to board-level scrutiny before the first trade was placed.</p>
-          <h4>What We Did</h4>
-          <p>Led the full internalisation programme end to end. Designed the systems architecture and business process map covering trading, optimisation, scheduling, settlement, and risk, and presented it to the CEO and senior leadership as the basis for the go or no-go investment decision. Built the full cost model and build-vs-buy analysis across the trading stack, produced a phased hiring plan, ran vendor selection across back, middle, and front office systems, onboarded ETRM and EDT/EDL trading infrastructure, and led EPEX and Nord Pool exchange registration, Elexon CVA Qualification, ECC clearing arrangements, and Balancing Mechanism participation onboarding.</p>
-          <h4>Result</h4>
-          <p>The client has a fully stood-up trading operation: external market access on one side, internal IT and trading software on the other, costed and sequenced so leadership can pace investment against portfolio growth. Traders could test algorithms against live market data on the new stack before a single MW was dispatched in-house, turning a multi-year decade-long commitment into a decision the CEO could actually sign off on.</p>
-        </div>
-      </div>
-      <div class="case-study">
-        <div class="case-study-meta">
-          <div class="scope">120MW live + 1GW pipeline | Germany</div>
-          <h3>European IPP Entering German BESS</h3>
-          <div class="outcome">Platform design handed to engineering with no translation layer. Dashboard served as the living reference through the build.</div>
-        </div>
-        <div class="case-study-content">
-          <h4>Challenge</h4>
-          <p>The client was entering the German BESS market with 120MW live and a 1GW pipeline, and needed an in-house trading platform design the trading team could actually build from. Existing design artefacts, where they existed, were static Miro flowcharts that broke down as soon as the platform scope grew.</p>
-          <h4>What We Did</h4>
-          <p>Designed the UI/UX, data architecture, and business process map for the full trading platform. Built an interactive Google AI Studio dashboard mapping ancillary service flows, data maps, and asset-to-trade dependencies, navigable in real time. Produced a German BESS market composition and revenue-stacking research piece for the CTO and Platform Manager to size the opportunity. Mapped the trader-facing alerts framework end to end from asset telemetry through to trade execution.</p>
-          <h4>Result</h4>
-          <p>The full platform specification handed to engineering was complete enough that implementation could start without a translation layer. The dashboard became the team's working reference throughout the build phase rather than an artefact that gets filed after sign-off.</p>
-        </div>
-      </div>
-      <div class="case-study">
-        <div class="case-study-meta">
-          <div class="scope">UK Energy Supplier</div>
-          <h3>Growing UK Energy Supplier</h3>
-          <div class="outcome">Mean Absolute Percentage Error roughly halved. Imbalance cost exposure reduced by an estimated 15 to 25 percent.</div>
-        </div>
-        <div class="case-study-content">
-          <h4>Challenge</h4>
-          <p>The client needed stronger demand forecasting across short-term and long-term horizons. The existing long-term model took around six hours to run and required heavy manual tuning before the commercial team could trust the output. Forecast errors were compounding into material imbalance cost exposure.</p>
-          <h4>What We Did</h4>
-          <p>Built both the short-term and long-term power demand forecasting models. The long-term model was rewritten in R, plugged directly into the client's database, and delivered accurate five-year-ahead forecasts in under 30 minutes with built-in data cleansing that flags anomalies for the commercial team to investigate. The short-term model was first delivered in 2021, and rebuilt in 2026 with refreshed methodology. Replaced several manual data-processing steps with scheduled Python and R jobs.</p>
-          <h4>Result</h4>
-          <p>Mean Absolute Percentage Error was roughly halved on both short-term and long-term builds. Imbalance costs fell by around 20%. The long-term run time dropped from six hours to under 30 minutes. The forecasting platform now operates with minimal manual intervention, freeing the commercial team for higher-value work.</p>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">UK Energy Supplier</span>
+            <span class="case-title">Growing UK energy supplier improving forecasting</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <div class="case-outcome">Mean Absolute Percentage Error roughly halved. Imbalance cost exposure reduced by an estimated 15% to 25%.</div>
+            <h4>Challenge</h4>
+            <p>The client needed stronger demand forecasting across short-term and long-term horizons. The existing long-term model took around six hours to run and required heavy manual tuning before the commercial team could trust the output. Forecast errors were compounding into material imbalance cost exposure.</p>
+            <h4>What We Did</h4>
+            <p>Built both the short-term and long-term power demand forecasting models. The long-term model was rewritten in R, plugged directly into the client's database, and delivered accurate five-year-ahead forecasts in under 30 minutes with built-in data cleansing that flags anomalies for the commercial team to investigate. The short-term model was first delivered in 2021, and rebuilt in 2026 with refreshed methodology. Replaced several manual data-processing steps with scheduled Python and R jobs.</p>
+            <h4>Result</h4>
+            <p>Mean Absolute Percentage Error was roughly halved on both short-term and long-term builds. Imbalance costs fell by around 20%. The long-term run time dropped from six hours to under 30 minutes. The forecasting platform now operates with minimal manual intervention, freeing the commercial team for higher-value work.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2059,6 +2214,7 @@
         <h2>Engagement Models</h2>
         <p class="engagement-price">Engagements start from £15,000</p>
       </div>
+      <p class="engagement-note">Each model below includes example engagements. Every engagement is scoped to what you actually need.</p>
       <div class="engagement-grid">
         <div class="engagement-card">
           <div class="engagement-card-header">
@@ -2066,7 +2222,6 @@
             <span class="duration">2 to 4 weeks</span>
           </div>
           <p>Best for small, surgical pieces of work with a clear scope and deliverable. Fixed fee, fast turnaround.</p>
-          <p class="engagement-examples-label">Example engagements:</p>
           <ul>
             <li>Market education workshop for leadership or commercial teams</li>
             <li>Perfect Foresight benchmarking to quantify asset performance</li>
@@ -2081,7 +2236,6 @@
             <span class="duration">One quarter</span>
           </div>
           <p>Best for more complex, multi-workstream engagements that need both diagnostic and phased implementation. Costed roadmap covering people, process, and platform.</p>
-          <p class="engagement-examples-label">Example engagements:</p>
           <ul>
             <li>Route-to-market business case and internalisation roadmap</li>
             <li>Trading operating model design across front, middle, and back office</li>
@@ -2095,7 +2249,6 @@
             <span class="duration">Ongoing</span>
           </div>
           <p>Best where ongoing support is needed, whether for complex longer-running engagements or to reserve availability for ad-hoc queries — typically a few days a month, embedded with your trading and operations teams.</p>
-          <p class="engagement-examples-label">Example engagements:</p>
           <ul>
             <li>ETRM implementation oversight and post-go-live stabilisation</li>
             <li>BESS trading platform build and hardening</li>
@@ -2104,7 +2257,6 @@
           </ul>
         </div>
       </div>
-      <p class="engagement-note">Examples shown are indicative. Engagements are scoped to what you actually need.</p>
     </div>
   </section>
 
@@ -2345,6 +2497,29 @@
       });
     })();
     
+    // --- Case studies accordion (only one open at a time) ---
+    (function() {
+      var rows = document.querySelectorAll('.case-row');
+      rows.forEach(function(row) {
+        var head = row.querySelector('.case-head');
+        if (!head) return;
+        head.addEventListener('click', function() {
+          var wasOpen = row.classList.contains('is-open');
+          // Close all rows first
+          rows.forEach(function(r) {
+            r.classList.remove('is-open');
+            var h = r.querySelector('.case-head');
+            if (h) h.setAttribute('aria-expanded', 'false');
+          });
+          // If the clicked row was closed, open it. If it was already open, leave all closed.
+          if (!wasOpen) {
+            row.classList.add('is-open');
+            head.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    })();
+    
     // --- Testimonial Read more (mobile only) ---
     (function() {
       var carousel = document.getElementById('testimonialCarousel');
@@ -2352,12 +2527,24 @@
       var quotes = carousel.querySelectorAll('.carousel-slide blockquote');
       var WORDS = 30;
       
+      function collapseAll() {
+        carousel.querySelectorAll('.read-more-toggle').forEach(function(toggle) {
+          if (toggle.textContent === 'Read less') {
+            var bq = toggle.previousElementSibling;
+            var truncated = toggle.getAttribute('data-truncated');
+            if (bq && truncated) {
+              bq.textContent = truncated;
+              toggle.textContent = 'Read more';
+            }
+          }
+        });
+      }
+      
       function setUp() {
         var mobile = window.matchMedia('(max-width: 768px)').matches;
         quotes.forEach(function(bq) {
           var original = bq.getAttribute('data-full') || bq.textContent;
           bq.setAttribute('data-full', original);
-          // remove any prior toggle
           var existing = bq.parentNode.querySelector('.read-more-toggle');
           if (existing) existing.remove();
           
@@ -2378,6 +2565,7 @@
           toggle.className = 'read-more-toggle';
           toggle.type = 'button';
           toggle.textContent = 'Read more';
+          toggle.setAttribute('data-truncated', truncated);
           toggle.addEventListener('click', function() {
             if (toggle.textContent === 'Read more') {
               bq.textContent = original;
@@ -2392,6 +2580,36 @@
       }
       setUp();
       window.addEventListener('resize', setUp);
+      
+      var prevBtn = carousel.querySelector('.carousel-arrow-prev');
+      var nextBtn = carousel.querySelector('.carousel-arrow-next');
+      var dots = carousel.querySelectorAll('.carousel-dot');
+      if (prevBtn) prevBtn.addEventListener('click', collapseAll, true);
+      if (nextBtn) nextBtn.addEventListener('click', collapseAll, true);
+      dots.forEach(function(d) { d.addEventListener('click', collapseAll, true); });
+      var track = carousel.querySelector('.carousel-track');
+      if (track) {
+        // Only collapse when the user actually swipes between slides — not
+        // when they simply tap the "Read more" button, which would otherwise
+        // immediately undo the expand.
+        var swipeStartX = null, swipeCurrentX = null;
+        var SWIPE_THRESHOLD = 50;
+        track.addEventListener('touchstart', function(e) {
+          swipeStartX = e.touches[0].clientX;
+          swipeCurrentX = null;
+        }, { passive: true });
+        track.addEventListener('touchmove', function(e) {
+          swipeCurrentX = e.touches[0].clientX;
+        }, { passive: true });
+        track.addEventListener('touchend', function() {
+          if (swipeStartX !== null && swipeCurrentX !== null &&
+              Math.abs(swipeCurrentX - swipeStartX) > SWIPE_THRESHOLD) {
+            collapseAll();
+          }
+          swipeStartX = null;
+          swipeCurrentX = null;
+        });
+      }
     })();
   </script>
 </body>
