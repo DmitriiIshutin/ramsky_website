@@ -999,20 +999,20 @@
     .read-more-toggle {
       background: none;
       border: none;
-      padding: 6px 0 0;
+      padding: 0;
+      margin: 0;
       font: inherit;
+      font-style: normal;
       color: var(--terracotta);
-      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      margin-top: 4px;
       display: none;
+      vertical-align: baseline;
+      line-height: inherit;
     }
     
     @media (max-width: 768px) {
-      .read-more-toggle { display: inline-block; }
+      .read-more-toggle { display: inline; }
     }
     
     .carousel-dots {
@@ -2643,14 +2643,15 @@
       if (!carousel) return;
       var quotes = carousel.querySelectorAll('.carousel-slide blockquote');
       var WORDS = 30;
+      var mq = window.matchMedia('(max-width: 768px)');
       
       function collapseAll() {
         carousel.querySelectorAll('.read-more-toggle').forEach(function(toggle) {
           if (toggle.textContent === 'Read less') {
-            var bq = toggle.previousElementSibling;
+            var span = toggle.previousElementSibling;
             var truncated = toggle.getAttribute('data-truncated');
-            if (bq && truncated) {
-              bq.textContent = truncated;
+            if (span && truncated) {
+              span.textContent = truncated;
               toggle.textContent = 'Read more';
             }
           }
@@ -2658,12 +2659,19 @@
       }
       
       function setUp() {
-        var mobile = window.matchMedia('(max-width: 768px)').matches;
+        var mobile = mq.matches;
         quotes.forEach(function(bq) {
-          var original = bq.getAttribute('data-full') || bq.textContent;
-          bq.setAttribute('data-full', original);
-          var existing = bq.parentNode.querySelector('.read-more-toggle');
-          if (existing) existing.remove();
+          // Pull the original full text (cached on data-full after first call)
+          var existingSpan = bq.querySelector('.quote-text');
+          var original = bq.getAttribute('data-full');
+          if (!original) {
+            // First run: text is still raw inside the blockquote
+            original = bq.textContent;
+            bq.setAttribute('data-full', original);
+          }
+          
+          // Reset blockquote contents
+          bq.textContent = '';
           
           if (!mobile) {
             bq.textContent = original;
@@ -2675,8 +2683,12 @@
             bq.textContent = original;
             return;
           }
-          var truncated = words.slice(0, WORDS).join(' ') + '…';
-          bq.textContent = truncated;
+          var truncated = words.slice(0, WORDS).join(' ') + '… ';
+          
+          // Build inline structure: <span>truncated</span><button>Read more</button>
+          var span = document.createElement('span');
+          span.className = 'quote-text';
+          span.textContent = truncated;
           
           var toggle = document.createElement('button');
           toggle.className = 'read-more-toggle';
@@ -2685,18 +2697,29 @@
           toggle.setAttribute('data-truncated', truncated);
           toggle.addEventListener('click', function() {
             if (toggle.textContent === 'Read more') {
-              bq.textContent = original;
+              span.textContent = original + ' ';
               toggle.textContent = 'Read less';
             } else {
-              bq.textContent = truncated;
+              span.textContent = truncated;
               toggle.textContent = 'Read more';
             }
           });
-          bq.parentNode.insertBefore(toggle, bq.nextSibling);
+          
+          bq.appendChild(span);
+          bq.appendChild(toggle);
         });
       }
+      
       setUp();
-      window.addEventListener('resize', setUp);
+      // Listen for breakpoint crossings only — not every viewport-height
+      // wobble (e.g. mobile address bar collapsing on scroll). The address-bar
+      // resize was the bug that was silently re-truncating the quote and
+      // hiding the user's expanded text behind "Read more" again.
+      if (typeof mq.addEventListener === 'function') {
+        mq.addEventListener('change', setUp);
+      } else if (typeof mq.addListener === 'function') {
+        mq.addListener(setUp); // older Safari
+      }
       
       var prevBtn = carousel.querySelector('.carousel-arrow-prev');
       var nextBtn = carousel.querySelector('.carousel-arrow-next');
@@ -2707,8 +2730,7 @@
       var track = carousel.querySelector('.carousel-track');
       if (track) {
         // Only collapse when the user actually swipes between slides — not
-        // when they simply tap the "Read more" button, which would otherwise
-        // immediately undo the expand.
+        // when they simply tap the "Read more" button.
         var swipeStartX = null, swipeCurrentX = null;
         var SWIPE_THRESHOLD = 50;
         track.addEventListener('touchstart', function(e) {
