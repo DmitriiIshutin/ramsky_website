@@ -145,6 +145,11 @@
       opacity: 1;
     }
     
+    .nav-link.is-active {
+      color: var(--terracotta);
+      opacity: 1;
+    }
+    
     .btn {
       display: inline-flex;
       align-items: center;
@@ -254,6 +259,8 @@
       border-bottom: 1px solid rgba(30,58,80,0.08);
       font-weight: 500;
     }
+    
+    .mobile-menu-panel a.is-active { color: var(--terracotta); }
     
     .mobile-menu-panel a:last-child {
       margin-top: 16px;
@@ -1835,8 +1842,8 @@
           <a href="#approach" class="nav-link">Approach</a>
           <a href="#work" class="nav-link">Case Studies</a>
           <a href="#engage" class="nav-link">How we work</a>
-          <a href="/for-recruiters/" class="nav-link">For Recruiters</a>
           <a href="#about" class="nav-link">About</a>
+          <a href="/for-recruiters/" class="nav-link">For Recruiters</a>
           <a href="#contact" class="btn btn-primary">Get in touch <span class="arrow">→</span></a>
         </div>
         <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenuPanel">
@@ -1855,8 +1862,8 @@
     <a href="#approach">Approach</a>
     <a href="#work">Case Studies</a>
     <a href="#engage">How we work</a>
-    <a href="/for-recruiters/">For Recruiters</a>
     <a href="#about">About</a>
+    <a href="/for-recruiters/">For Recruiters</a>
     <a href="#contact">Get in touch</a>
   </aside>
 
@@ -2612,6 +2619,69 @@
         }
       });
     });
+    
+    // --- Scroll spy: highlight the nav link for whichever section is in view.
+    //    Watches the homepage sections via IntersectionObserver and toggles
+    //    .is-active on the matching nav link (desktop and mobile).
+    (function() {
+      var sectionIds = ['services','approach','work','engage','about','contact'];
+      var sections = sectionIds
+        .map(function(id) { return document.getElementById(id); })
+        .filter(Boolean);
+      if (!sections.length || !('IntersectionObserver' in window)) return;
+      
+      // Selector matches both desktop nav links and mobile menu links.
+      function navLinksFor(id) {
+        return document.querySelectorAll(
+          '.nav-link[href="#' + id + '"], .mobile-menu-panel a[href="#' + id + '"]'
+        );
+      }
+      
+      function clearActive() {
+        document.querySelectorAll('.nav-link.is-active, .mobile-menu-panel a.is-active')
+          .forEach(function(el) {
+            // Preserve permanent .is-active on the For Recruiters link
+            // (which points to /for-recruiters/, not a hash anchor).
+            var href = el.getAttribute('href') || '';
+            if (href.indexOf('#') === 0) {
+              el.classList.remove('is-active');
+            }
+          });
+      }
+      
+      function setActive(id) {
+        clearActive();
+        navLinksFor(id).forEach(function(el) { el.classList.add('is-active'); });
+      }
+      
+      // Track which sections are currently intersecting; pick the topmost one.
+      var visible = new Set();
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            visible.add(entry.target.id);
+          } else {
+            visible.delete(entry.target.id);
+          }
+        });
+        // Pick the section earliest in document order that's currently visible.
+        var topmost = sectionIds.find(function(id) { return visible.has(id); });
+        if (topmost) {
+          setActive(topmost);
+        } else {
+          // Above the first section (e.g. in the hero) — clear all hash highlights.
+          clearActive();
+        }
+      }, {
+        // Trigger when the section is in the upper-middle of the viewport,
+        // accounting for the fixed nav. Top margin is negative so the
+        // intersection zone starts ~80px below the top of the page.
+        rootMargin: '-80px 0px -55% 0px',
+        threshold: 0
+      });
+      
+      sections.forEach(function(s) { observer.observe(s); });
+    })();
   </script>
   <script>
     (function() {
