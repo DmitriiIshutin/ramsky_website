@@ -1192,7 +1192,54 @@
       margin-bottom: 0;
     }
     
+    /* Q&A in How we work needs spacing between paragraphs */
+    .engage-accordion .case-body p + p { margin-top: 14px; }
+    .engage-accordion .case-body p { font-size: 16px; }
+    
     /* About */
+    /* How we work */
+    .engage {
+      padding: 120px 0;
+      background: var(--cream);
+    }
+    
+    .engage-intro {
+      max-width: 760px;
+      margin: 0 auto 56px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    
+    .engage-accordion {
+      margin-top: 0;
+    }
+    
+    .engage-list {
+      margin: 14px 0 0;
+      padding: 0 0 0 20px;
+      list-style: disc;
+    }
+    
+    .engage-list li {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink);
+      margin-bottom: 10px;
+      padding-left: 4px;
+    }
+    
+    .engage-list li::marker { color: var(--terracotta); }
+    
+    .engage-list li:last-child { margin-bottom: 0; }
+    
+    @media (max-width: 768px) {
+      .engage { padding: 80px 0; }
+      .engage-intro { font-size: 16px; margin-bottom: 32px; }
+      .engage-list li { font-size: 15px; }
+    }
+    
     .about {
       padding: 120px 0;
       background: white;
@@ -1787,6 +1834,8 @@
           <a href="#services" class="nav-link">Services</a>
           <a href="#approach" class="nav-link">Approach</a>
           <a href="#work" class="nav-link">Case Studies</a>
+          <a href="#engage" class="nav-link">How we work</a>
+          <a href="contracting.html" class="nav-link">Contracting</a>
           <a href="#about" class="nav-link">About</a>
           <a href="#contact" class="btn btn-primary">Get in touch <span class="arrow">→</span></a>
         </div>
@@ -1805,6 +1854,8 @@
     <a href="#services">Services</a>
     <a href="#approach">Approach</a>
     <a href="#work">Case Studies</a>
+    <a href="#engage">How we work</a>
+    <a href="contracting.html">Contracting</a>
     <a href="#about">About</a>
     <a href="#contact">Get in touch</a>
   </aside>
@@ -2183,7 +2234,7 @@
             </div>
             <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
               <div class="testimonial-card">
-                <blockquote>"Dmitrii and Ram Sky have built two forecasting models for us. The first was a short-term demand model five years ago, which he came back and rebuilt this year. Both builds roughly halved MAPE and cut our imbalance costs by around 20%. He also delivered a long-term model that runs in under 1 hr rather than six, and flags data issues automatically so the commercial team can look into them. The team at Ram Sky are extremely professional and a pleasure to work with. Communication was clear and consistent throughout, and they were always approachable, responsive, and personable. The whole process felt seamless, and I would happily recommend Ram Sky to any energy industry participant looking to build out its forecasting capability."</blockquote>
+                <blockquote>"Dmitrii and Ram Sky have built two forecasting models for us. The first was a short-term demand model in 2021, which Ram Sky came back and rebuilt in 2026. Both builds roughly halved MAPE and cut our imbalance costs by around 20%. Ram Sky also delivered a long-term model that runs in under 1 hr rather than six, and flags data issues automatically so the commercial team can look into them. The team at Ram Sky are extremely professional and a pleasure to work with. Communication was clear and consistent throughout, and they were always approachable, responsive, and personable. The whole process felt seamless, and I would happily recommend Ram Sky to any energy industry participant looking to build out its forecasting capability."</blockquote>
                 <div class="testimonial-author">
                   <div class="photo"><span class="initials">GC</span></div>
                   <div>
@@ -2284,6 +2335,99 @@
             <p>Built both the short-term and long-term power demand forecasting models. The long-term model was rewritten in R, plugged directly into the client's database, and delivered accurate five-year-ahead forecasts in under 30 minutes with built-in data cleansing that flags anomalies for the commercial team to investigate. The short-term model was first delivered in 2021, and rebuilt in 2026 with refreshed methodology. Replaced several manual data-processing steps with scheduled Python and R jobs.</p>
             <h4>Result</h4>
             <p>Mean Absolute Percentage Error was roughly halved on both short-term and long-term builds. Imbalance costs fell by around 20%. The long-term run time dropped from six hours to under 30 minutes. The forecasting platform now operates with minimal manual intervention, freeing the commercial team for higher-value work.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How we work -->
+  <section class="engage" id="engage">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label" style="color: var(--terracotta);">How we work</p>
+        <h2>Built for clients who want capability delivered, not described</h2>
+      </div>
+      <p class="engage-intro">Most engagements share a similar shape: a defined scope, a named principal, a working artefact at the end. The questions below cover what to expect.</p>
+      <div class="case-accordion engage-accordion">
+        <div class="case-row is-open">
+          <button class="case-head" type="button" aria-expanded="true">
+            <span class="case-scope">Engagements</span>
+            <span class="case-title">What kinds of engagements do you do?</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <p>Engagements typically take one of four shapes:</p>
+              <ul class="engage-list">
+                <li><strong>Discovery sprints</strong> run 2 to 4 weeks and produce a roadmap, business case, or build-vs-buy view.</li>
+                <li><strong>Project engagements</strong> run 8 to 16 weeks for a defined deliverable: a forecasting model rebuilt, an exchange registration completed, or a trading platform UI specified.</li>
+                <li><strong>Programme engagements</strong> run 6 to 12 months for full trading internalisation or platform builds.</li>
+                <li><strong>Retainers</strong> support clients on an ongoing basis, typically 1 to 2 days per week, where the relationship matters more than a specific scope.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">Capacity</span>
+            <span class="case-title">What about programmes that are bigger than one principal?</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <p>Ram Sky is principal-led. For engagements that exceed what one principal can deliver, we bring in named senior associates from a trusted network of traders, quants, and engineers.</p>
+              <p>Clients always know who is on their engagement and meet every associate before mobilisation. We do not pyramid junior staff onto delivery; the people you are shown are the people who do the work.</p>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">Onboarding</span>
+            <span class="case-title">How does an engagement start?</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <p>The typical first step is a 30-minute scoping call. We use it to understand the problem, the decision the client is trying to make, and what success looks like.</p>
+              <p>Within 5 working days we send a one-page proposal: scope, deliverables, duration, commercials, and named team. Engagements start within 2 to 4 weeks of sign-off.</p>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">Commercials</span>
+            <span class="case-title">How do you price?</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <p>We price by scope, not by headcount or hours. Fixed-fee where the scope is clear; day rate where it is not; outcome-linked where the value is measurable. We do not pad teams to grow fees, and we do not run discovery for its own sake. Engagement length and price scale with the problem, not with us.</p>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">Scope</span>
+            <span class="case-title">What do you not do?</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <p>We do not run open-ended advisory retainers without deliverables. We do not sell market research or data subscriptions. We do not translate a client brief into a slide deck without a delivery path. We do not take engagements where success requires a 30-person team. Those belong to the larger consultancies, and we will say so up front.</p>
+            </div>
+          </div>
+        </div>
+        <div class="case-row">
+          <button class="case-head" type="button" aria-expanded="false">
+            <span class="case-scope">Geography</span>
+            <span class="case-title">Where do you work?</span>
+            <svg class="case-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+          <div class="case-body">
+            <div class="case-body-inner">
+              <p>Ram Sky is based in London and works primarily across Great Britain and the European Union. We cover all major power and gas markets (GB, Germany, Nordics, Iberia) and have hands-on delivery experience in BESS and short-term power. We travel to clients where it helps; most discovery is delivered remotely.</p>
             </div>
           </div>
         </div>
@@ -2437,7 +2581,8 @@
           <ul>
             <li><a href="#about">About</a></li>
             <li><a href="#work">Case Studies</a></li>
-            <li><a href="#engagement">Engagement Models</a></li>
+            <li><a href="#engage">How we work</a></li>
+            <li><a href="contracting.html">Contracting</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
@@ -2614,25 +2759,29 @@
       });
     })();
     
-    // --- Case studies accordion (only one open at a time) ---
+    // --- Accordion (Case Studies + How we work). Each accordion is scoped
+    //     to its own .case-accordion container so opening a row in one
+    //     does not collapse rows in another. Single-open within each.
     (function() {
-      var rows = document.querySelectorAll('.case-row');
-      rows.forEach(function(row) {
-        var head = row.querySelector('.case-head');
-        if (!head) return;
-        head.addEventListener('click', function() {
-          var wasOpen = row.classList.contains('is-open');
-          // Close all rows first
-          rows.forEach(function(r) {
-            r.classList.remove('is-open');
-            var h = r.querySelector('.case-head');
-            if (h) h.setAttribute('aria-expanded', 'false');
+      var accordions = document.querySelectorAll('.case-accordion');
+      accordions.forEach(function(accordion) {
+        var rows = accordion.querySelectorAll('.case-row');
+        rows.forEach(function(row) {
+          var head = row.querySelector('.case-head');
+          if (!head) return;
+          head.addEventListener('click', function() {
+            var wasOpen = row.classList.contains('is-open');
+            // Close all rows in THIS accordion only
+            rows.forEach(function(r) {
+              r.classList.remove('is-open');
+              var h = r.querySelector('.case-head');
+              if (h) h.setAttribute('aria-expanded', 'false');
+            });
+            if (!wasOpen) {
+              row.classList.add('is-open');
+              head.setAttribute('aria-expanded', 'true');
+            }
           });
-          // If the clicked row was closed, open it. If it was already open, leave all closed.
-          if (!wasOpen) {
-            row.classList.add('is-open');
-            head.setAttribute('aria-expanded', 'true');
-          }
         });
       });
     })();
