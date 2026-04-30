@@ -271,6 +271,13 @@
       line-height: 1.55;
     }
     
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    
     /* Status panel */
     .status-section {
       padding: 56px 0 80px;
@@ -279,7 +286,7 @@
     
     .status-panel {
       max-width: 760px;
-      background: var(--navy);
+      background: var(--navy-dark);
       color: white;
       border-radius: 6px;
       padding: 36px 40px;
@@ -425,11 +432,7 @@
     }
     
     .cv-cta-inner {
-      max-width: 760px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;
+      max-width: 560px;
     }
     
     .cv-cta h2 {
@@ -441,13 +444,15 @@
     .cv-cta p {
       font-size: 16px;
       color: var(--ink-muted);
-      margin: 0;
+      margin: 0 0 24px;
     }
     
     .cv-channels {
       display: flex;
       gap: 12px;
       align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 0;
     }
     
     .cv-channel {
@@ -458,7 +463,7 @@
       height: 56px;
       background: var(--navy);
       color: white;
-      border-radius: 4px;
+      border-radius: 0;
       text-decoration: none;
       transition: background 0.2s ease;
     }
@@ -483,6 +488,29 @@
       border: 0;
     }
     
+    /* Booking button styled to match icon squares */
+    .btn-book {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 56px;
+      padding: 0 20px;
+      background: var(--navy);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: 0;
+      border: none;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+    }
+    
+    .btn-book:hover { background: var(--terracotta); }
+    .btn-book .arrow { transition: transform 0.2s ease; }
+    .btn-book:hover .arrow { transform: translateX(3px); }
+    
     /* Footer (matches homepage) */
     .footer {
       padding: 64px 0 32px;
@@ -498,8 +526,6 @@
       gap: 64px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    
-    .footer-brand .logo-box { margin-bottom: 20px; }
     
     .footer-brand p {
       font-size: 14px;
@@ -624,12 +650,7 @@
       .past-list .role { font-size: 11px; }
       
       .cv-cta { padding: 56px 0; }
-      .cv-cta-inner {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
       .cv-cta h2 { font-size: 24px; }
-      .cv-channels { justify-content: flex-start; }
       
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
     }
@@ -642,10 +663,7 @@
     <div class="container">
       <div class="nav-inner">
         <a href="/" class="logo" aria-label="Ram Sky home">
-          <div class="logo-box">
-            <span>Ram</span>
-            <span>Sky</span>
-          </div>
+          <img src="https://raw.githubusercontent.com/DmitriiIshutin/ramsky_website/main/logo.png" alt="Ram Sky" height="48" width="48" style="display: block;">
         </a>
         <div class="nav-links">
           <a href="/#services" class="nav-link">Services</a>
@@ -683,7 +701,9 @@
       <span class="label">For recruiters &amp; interim engagements</span>
       <h1>Outside IR35 programme leadership for trading, BESS, and transformation.</h1>
       <p class="subtitle">Available for programme management, project delivery, and trading transformation engagements across power markets, battery storage, and ETRM. Hands-on, not oversight-only.</p>
-      <a href="https://book.ramsky.co.uk/#/ramsky" target="_blank" rel="noopener noreferrer" class="btn btn-terracotta" style="margin-top: 32px;">Book a discovery call <span class="arrow">→</span></a>
+      <div class="hero-buttons">
+        <a href="https://book.ramsky.co.uk/#/ramsky" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a discovery call <span class="arrow">→</span></a>
+      </div>
     </div>
   </section>
 
@@ -790,11 +810,8 @@
   <section class="cv-cta">
     <div class="container">
       <div class="cv-cta-inner">
-        <div>
-          <h2>Contact for a CV</h2>
-          <p>Email, call, or message on LinkedIn for a copy of the contractor CV.</p>
-          <a href="https://book.ramsky.co.uk/#/ramsky" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 24px;">Book a discovery call <span class="arrow">→</span></a>
-        </div>
+        <h2>Contact for a CV</h2>
+        <p>Email, call, or message on LinkedIn for a copy of the contractor CV.</p>
         <div class="cv-channels">
           <a href="mailto:dmitrii.ishutin@ramsky.co.uk" class="cv-channel" aria-label="Email Dmitrii Ishutin">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -808,6 +825,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             <span class="cv-channel-label">LinkedIn</span>
           </a>
+          <a href="https://book.ramsky.co.uk/#/ramsky" target="_blank" rel="noopener noreferrer" class="btn-book">Book a discovery call <span class="arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -818,10 +836,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="/" class="logo">
-          <div class="logo-box">
-            <span>Ram</span>
-            <span>Sky</span>
-          </div>
+          <img src="https://raw.githubusercontent.com/DmitriiIshutin/ramsky_website/main/logo.png" alt="Ram Sky" height="48" width="48" style="display: block; margin-bottom: 20px;">
         </a>
         <p>Boutique energy trading consultancy.</p>
         <p>We design, build, and launch trading and forecasting platforms, algorithms and route-to-market infrastructure.</p>
