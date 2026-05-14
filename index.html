@@ -73,6 +73,7 @@
       color: var(--terracotta);
       letter-spacing: 0.12em;
       text-transform: uppercase;
+      margin-top: 0;
       margin-bottom: 16px;
     }
     
@@ -1278,6 +1279,12 @@
       align-items: start;
     }
     
+    .about-grid + .about-grid {
+      margin-top: 64px;
+      padding-top: 64px;
+      border-top: 1px solid rgba(30,58,80,0.1);
+    }
+    
     .founder-photo {
       position: relative;
       width: 100%;
@@ -1465,6 +1472,8 @@
       color: var(--ink-muted);
       font-style: italic;
     }
+    
+    .engagement-dots { display: none; }
     
     .engagement .section-header {
       margin-bottom: 16px;
@@ -1664,8 +1673,51 @@
     @media (max-width: 1024px) {
       .why-us-content { grid-template-columns: 1fr; }
       .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-grid + .about-grid { margin-top: 48px; padding-top: 48px; }
       
-      .engagement-grid { grid-template-columns: 1fr; }
+      .engagement-grid {
+        display: flex;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 0;
+        padding-bottom: 4px;
+        margin-left: -24px;
+        margin-right: -24px;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .engagement-grid::-webkit-scrollbar { display: none; }
+      .engagement-grid .engagement-card {
+        flex: 0 0 100%;
+        min-width: 0;
+        scroll-snap-align: start;
+        margin-right: 16px;
+      }
+      .engagement-grid .engagement-card:last-child { margin-right: 0; }
+      .engagement-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .engagement-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(30,58,80,0.2);
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.2s ease, transform 0.2s ease;
+        flex-shrink: 0;
+      }
+      .engagement-dot.is-active {
+        background: var(--terracotta);
+        transform: scale(1.25);
+      }
       
       .footer-grid { grid-template-columns: 1fr; gap: 40px; }
       .carousel { max-width: 100%; padding: 0; }
@@ -1849,8 +1901,8 @@
     <div class="container">
       <div class="nav-inner">
         <a href="#top" class="logo" aria-label="Ram Sky home">
-          <!-- swap src to https://ramsky.co.uk/logo.png once uploaded to repo root -->
-          <img src="https://raw.githubusercontent.com/DmitriiIshutin/ramsky_website/main/logo.png" alt="Ram Sky" height="48" width="48" style="display: block;">
+          <!-- Logo served from ramsky.co.uk -->
+          <img src="https://ramsky.co.uk/logo.png" alt="Ram Sky" height="48" width="48" style="display: block;">
         </a>
         <div class="nav-links">
           <a href="#services" class="nav-link">Services</a>
@@ -1893,7 +1945,8 @@
         <p class="hero-subtitle">Ram Sky supports energy trading desks in designing, building and launching the trading and forecasting platforms, algorithms and route-to-market infrastructure for battery storage and flexible generation portfolios — from concept to live P&L.</p>
         <div class="hero-buttons">
           <a href="https://book.ramsky.co.uk/#/ramsky" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Book a discovery call <span class="arrow">→</span></a>
-          <a href="#work" class="btn btn-outline">See how we deliver</a>
+          <a href="#work" class="btn btn-outline" style="min-width: 168px; justify-content: center;">See how we deliver</a>
+          <a href="/for-recruiters/" class="btn btn-outline" style="min-width: 168px; justify-content: center;">For Recruiters</a>
         </div>
 
       </div>
@@ -2540,6 +2593,11 @@
             <li>Continuous trading due diligence for active investor mandates</li>
           </ul>
         </div>
+        <div class="engagement-dots" id="engagementDots">
+          <button class="engagement-dot is-active" data-index="0" aria-label="Sprint"></button>
+          <button class="engagement-dot" data-index="1" aria-label="90-Day Delivery"></button>
+          <button class="engagement-dot" data-index="2" aria-label="Retainer"></button>
+        </div>
       </div>
     </div>
   </section>
@@ -2566,8 +2624,8 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="#top" class="logo">
-            <!-- swap src to https://ramsky.co.uk/logo.png once uploaded to repo root -->
-            <img src="https://raw.githubusercontent.com/DmitriiIshutin/ramsky_website/main/logo.png" alt="Ram Sky" height="48" width="48" style="display: block; margin-bottom: 20px;">
+            <!-- Logo served from ramsky.co.uk -->
+            <img src="https://ramsky.co.uk/logo.png" alt="Ram Sky" height="48" width="48" style="display: block; margin-bottom: 20px;">
           </a>
           <p>Boutique energy trading consultancy.</p>
           <p>We design, build, and launch trading and forecasting platforms, algorithms and route-to-market infrastructure.</p>
@@ -2841,6 +2899,33 @@
         } else {
           goTo(index);
         }
+      });
+    })();
+    
+    // --- Engagement Models: mobile scroll-snap carousel with dot sync ---
+    (function() {
+      var grid = document.querySelector('.engagement-grid');
+      var dots = document.querySelectorAll('.engagement-dot');
+      if (!grid || !dots.length) return;
+      
+      function setActive(index) {
+        dots.forEach(function(d, i) {
+          d.classList.toggle('is-active', i === index);
+        });
+      }
+      
+      // Sync dots as user swipes
+      grid.addEventListener('scroll', function() {
+        var index = Math.round(grid.scrollLeft / grid.clientWidth);
+        setActive(Math.max(0, Math.min(index, dots.length - 1)));
+      }, { passive: true });
+      
+      // Dot click scrolls to that card
+      dots.forEach(function(dot, i) {
+        dot.addEventListener('click', function() {
+          grid.scrollTo({ left: i * grid.clientWidth, behavior: 'smooth' });
+          setActive(i);
+        });
       });
     })();
     
