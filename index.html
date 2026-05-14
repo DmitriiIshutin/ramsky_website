@@ -1473,6 +1473,8 @@
       font-style: italic;
     }
     
+    .engagement-carousel-arrow,
+    .engagement-carousel-dots { display: none; }
     .engagement-dots { display: none; }
     
     .engagement .section-header {
@@ -1677,33 +1679,49 @@
       
       .engagement-grid {
         display: flex;
-        overflow-x: scroll;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        gap: 0;
-        padding-bottom: 4px;
-        margin-left: -24px;
-        margin-right: -24px;
-        padding-left: 24px;
-        padding-right: 24px;
+        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
       }
-      .engagement-grid::-webkit-scrollbar { display: none; }
       .engagement-grid .engagement-card {
         flex: 0 0 100%;
         min-width: 0;
-        scroll-snap-align: start;
-        margin-right: 16px;
+        margin: 0;
       }
-      .engagement-grid .engagement-card:last-child { margin-right: 0; }
-      .engagement-dots {
+      #engagementCarousel {
+        position: relative;
+      }
+      .engagement-carousel-viewport {
+        overflow: hidden;
+        position: relative;
+      }
+      .engagement-carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid rgba(30,58,80,0.15);
+        color: var(--ink);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        z-index: 2;
+        box-shadow: 0 2px 10px -4px rgba(30,58,80,0.15);
+      }
+      .engagement-carousel-arrow svg { width: 18px; height: 18px; }
+      .engagement-carousel-arrow-prev { left: -8px; }
+      .engagement-carousel-arrow-next { right: -8px; }
+      .engagement-carousel-dots {
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 10px;
-        margin-top: 20px;
+        margin-top: 24px;
+        padding: 4px 0;
       }
-      .engagement-dot {
+      .engagement-carousel-dot {
         width: 10px;
         height: 10px;
         border-radius: 50%;
@@ -1711,10 +1729,11 @@
         background: rgba(30,58,80,0.2);
         cursor: pointer;
         padding: 0;
-        transition: background 0.2s ease, transform 0.2s ease;
+        margin: 0;
         flex-shrink: 0;
+        transition: background 0.2s, transform 0.2s;
       }
-      .engagement-dot.is-active {
+      .engagement-carousel-dot.is-active {
         background: var(--terracotta);
         transform: scale(1.25);
       }
@@ -2552,7 +2571,12 @@
         <p class="engagement-price">Engagements start from £15,000</p>
       </div>
       <p class="engagement-note">Each model below includes example engagements. Every engagement is scoped to what you actually need.</p>
-      <div class="engagement-grid">
+      <div id="engagementCarousel" aria-roledescription="carousel" aria-label="Engagement models">
+        <button class="engagement-carousel-arrow engagement-carousel-arrow-prev" type="button" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="engagement-carousel-viewport">
+          <div class="engagement-grid">
         <div class="engagement-card">
           <div class="engagement-card-header">
             <h3>Sprint</h3>
@@ -2593,10 +2617,14 @@
             <li>Continuous trading due diligence for active investor mandates</li>
           </ul>
         </div>
-        <div class="engagement-dots" id="engagementDots">
-          <button class="engagement-dot is-active" data-index="0" aria-label="Sprint"></button>
-          <button class="engagement-dot" data-index="1" aria-label="90-Day Delivery"></button>
-          <button class="engagement-dot" data-index="2" aria-label="Retainer"></button>
+        </div>
+        <button class="engagement-carousel-arrow engagement-carousel-arrow-next" type="button" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="engagement-carousel-dots" role="tablist" aria-label="Select engagement model">
+          <button class="engagement-carousel-dot is-active" type="button" aria-label="Sprint" data-index="0"></button>
+          <button class="engagement-carousel-dot" type="button" aria-label="90-Day Delivery" data-index="1"></button>
+          <button class="engagement-carousel-dot" type="button" aria-label="Retainer" data-index="2"></button>
         </div>
       </div>
     </div>
@@ -2902,30 +2930,58 @@
       });
     })();
     
-    // --- Engagement Models: mobile scroll-snap carousel with dot sync ---
+    // --- Engagement Models: mobile carousel (same mechanics as AI carousel) ---
     (function() {
-      var grid = document.querySelector('.engagement-grid');
-      var dots = document.querySelectorAll('.engagement-dot');
-      if (!grid || !dots.length) return;
+      var carousel = document.getElementById('engagementCarousel');
+      if (!carousel) return;
+      var track = carousel.querySelector('.engagement-grid');
+      var slides = carousel.querySelectorAll('.engagement-card');
+      var prev = carousel.querySelector('.engagement-carousel-arrow-prev');
+      var next = carousel.querySelector('.engagement-carousel-arrow-next');
+      var dots = carousel.querySelectorAll('.engagement-carousel-dot');
+      var index = 0;
+      var total = slides.length;
       
-      function setActive(index) {
-        dots.forEach(function(d, i) {
-          d.classList.toggle('is-active', i === index);
+      function isMobile() { return window.matchMedia('(max-width: 768px)').matches; }
+      
+      function goTo(i) {
+        if (!isMobile()) return;
+        index = ((i % total) + total) % total;
+        track.style.transform = 'translateX(' + (-index * 100) + '%)';
+        dots.forEach(function(d, di) {
+          d.classList.toggle('is-active', di === index);
         });
       }
       
-      // Sync dots as user swipes
-      grid.addEventListener('scroll', function() {
-        var index = Math.round(grid.scrollLeft / grid.clientWidth);
-        setActive(Math.max(0, Math.min(index, dots.length - 1)));
-      }, { passive: true });
+      prev.addEventListener('click', function() { goTo(index - 1); });
+      next.addEventListener('click', function() { goTo(index + 1); });
+      dots.forEach(function(dot, di) {
+        dot.addEventListener('click', function() { goTo(di); });
+      });
       
-      // Dot click scrolls to that card
-      dots.forEach(function(dot, i) {
-        dot.addEventListener('click', function() {
-          grid.scrollTo({ left: i * grid.clientWidth, behavior: 'smooth' });
-          setActive(i);
-        });
+      // Touch swipe
+      var startX = null, currentX = null, threshold = 50;
+      track.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchmove', function(e) { currentX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', function() {
+        if (startX === null || currentX === null) { startX = null; currentX = null; return; }
+        var delta = currentX - startX;
+        if (Math.abs(delta) > threshold) {
+          if (delta < 0) goTo(index + 1); else goTo(index - 1);
+        }
+        startX = null;
+        currentX = null;
+      });
+      
+      // Reset on resize
+      window.addEventListener('resize', function() {
+        if (!isMobile()) {
+          track.style.transform = '';
+          index = 0;
+          dots.forEach(function(d, di) { d.classList.toggle('is-active', di === 0); });
+        } else {
+          goTo(index);
+        }
       });
     })();
     
