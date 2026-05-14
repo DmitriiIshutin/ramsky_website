@@ -1477,6 +1477,9 @@
     .engagement-carousel-dots { display: none; }
     .engagement-dots { display: none; }
     
+    #engagementCarousel { position: relative; }
+    .engagement-carousel-viewport { overflow: hidden; }
+    
     .engagement .section-header {
       margin-bottom: 16px;
     }
@@ -1679,6 +1682,7 @@
       
       .engagement-grid {
         display: flex;
+        gap: 0;
         transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
         will-change: transform;
       }
