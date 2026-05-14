@@ -329,11 +329,68 @@
     
     .status-grid dd strong { color: var(--terracotta); font-weight: 600; }
     
+    .cv-download-link {
+      color: white;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    
+    .cv-download-link:hover { color: var(--terracotta); }
+    
     .status-grid > dt:first-of-type,
     .status-grid > dd:nth-of-type(1) {
       border-top: none;
       padding-top: 0;
     }
+    
+    /* IR35 explainer spoiler */
+    .ir35-explainer {
+      margin-top: 10px;
+      display: block;
+    }
+    
+    .ir35-explainer summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    
+    .ir35-explainer summary::-webkit-details-marker { display: none; }
+    
+    .ir35-explainer summary::before {
+      content: '▸';
+      font-size: 11px;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    
+    .ir35-explainer[open] summary::before { transform: rotate(90deg); }
+    
+    .ir35-explainer summary:hover { color: rgba(255,255,255,0.9); }
+    
+    .ir35-explainer-body {
+      margin-top: 12px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.07);
+      border-left: 2px solid rgba(255,255,255,0.2);
+      border-radius: 2px;
+    }
+    
+    .ir35-explainer-body p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.75);
+      margin: 0 0 10px;
+    }
+    
+    .ir35-explainer-body p:last-child { margin: 0; }
     
     /* Body sections */
     .body-section {
@@ -422,6 +479,61 @@
       line-height: 1.65;
       margin: 0;
       color: var(--ink);
+    }
+    
+    /* Testimonial */
+    .recruiter-testimonial {
+      padding: 72px 0;
+      background: var(--navy);
+      border-top: 1px solid rgba(30,58,80,0.08);
+    }
+    
+    .recruiter-testimonial blockquote {
+      max-width: 760px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 19px;
+      font-style: italic;
+      line-height: 1.7;
+      color: white;
+      margin: 0 0 28px;
+      font-weight: 400;
+    }
+    
+    .recruiter-testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    
+    .recruiter-testimonial-author .initials {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .recruiter-testimonial-author .name {
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+    }
+    
+    .recruiter-testimonial-author .role {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 2px;
+    }
+    
+    @media (max-width: 768px) {
+      .recruiter-testimonial { padding: 48px 0; }
+      .recruiter-testimonial blockquote { font-size: 16px; }
     }
     
     /* CTA: Contact for a CV */
@@ -663,7 +775,7 @@
     <div class="container">
       <div class="nav-inner">
         <a href="/" class="logo" aria-label="Ram Sky home">
-          <img src="https://raw.githubusercontent.com/DmitriiIshutin/ramsky_website/main/logo.png" alt="Ram Sky" height="48" width="48" style="display: block;">
+          <img src="https://ramsky.co.uk/logo.png" alt="Ram Sky" height="48" width="48" style="display: block;">
         </a>
         <div class="nav-links">
           <a href="/#services" class="nav-link">Services</a>
@@ -714,7 +826,18 @@
         <h2>Recruiter brief</h2>
         <dl class="status-grid">
           <dt>IR35 status</dt>
-          <dd><strong>Outside IR35</strong></dd>
+          <dd>
+            <strong>Outside IR35</strong>
+            <details class="ir35-explainer">
+              <summary>What is Outside IR35?</summary>
+              <div class="ir35-explainer-body">
+                <p>Outside IR35 means HMRC classifies the engagement as genuinely self-employed rather than disguised employment. In practice this means a few things for how a placement works.</p>
+                <p>The arrangement must be project or contract-based with a defined scope, not a rolling open-ended arrangement that resembles permanent employment. Ram Sky operates through Ram Sky Ltd and is responsible for its own tax and National Insurance. You do not deduct PAYE.</p>
+                <p>The contractor retains a degree of independence over how and when the work is delivered, can use its own methods and tools, and can substitute another qualified professional if needed. A permanent full-time role does not qualify as outside IR35 regardless of how it is labelled on paper.</p>
+                <p>If your client needs to issue a Status Determination Statement, Ram Sky is happy to support that process.</p>
+              </div>
+            </details>
+          </dd>
           
           <dt>Location</dt>
           <dd>London, UK; willing to travel</dd>
@@ -729,7 +852,17 @@
           <dd>Three months minimum; six to twelve months preferred for programme delivery</dd>
           
           <dt>Day rate</dt>
-          <dd><strong>£1,000 to £1,400 per day</strong>, depending on engagement scope and length</dd>
+          <dd>
+            <strong>£1,000 to £1,400 per day</strong>, depending on engagement scope and length.<br><br>
+            New clients receive a 25% discount on the first parcel of work, making it a straightforward way to establish the working relationship and align on delivery approach before committing to a longer engagement.<br><br>
+            Standard rates apply from the second engagement onward.
+          </dd>
+
+          <dt>CV</dt>
+          <dd><a href="/CV_Dmitrii_Ishutin.pdf" target="_blank" rel="noopener noreferrer" class="cv-download-link">Download CV (PDF) ↓</a></dd>
+
+          <dt>Markets &amp; systems</dt>
+          <dd>GB Balancing Mechanism, BRP (Balance Responsible Party), BSP (Balancing Service Provider), EPEX, EEX, Nord Pool, XBID, intraday, day-ahead, ancillary services, mFRR, aFRR, FCR, frequency response, triads, EUA carbon, RECs/PPAs, REMIT, BESS, ETRM, Python, R, SQL, algorithmic trading, backtesting, quantitative modelling, forecasting</dd>
         </dl>
       </div>
     </div>
@@ -742,6 +875,17 @@
         <h2>About</h2>
         <p>Dmitrii Ishutin is the founder of Ram Sky and a senior independent contractor available for interim and programme leadership engagements across power markets, BESS commercialisation, and trading transformation.</p>
         <p>His background spans <strong>EDF Energy</strong> (curve trader, £10m P&amp;L), <strong>Shell</strong> (product lead on the Battery Trading Platform underpinning a £20m+ revenue BESS portfolio that topped the Modo Energy leaderboard for two consecutive months), and <strong>Brady Technologies</strong> (quant analytics manager on PowerDesk). Recent clients include Statera Energy and VPI.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hands-on -->
+  <section class="body-section">
+    <div class="container">
+      <div class="inner">
+        <h2>Hands-on, not oversight-only</h2>
+        <p>Engagements range from full programme leadership down to rolling up sleeves on a model, a platform spec, or an algorithm. Most clients hire the combination, a programme lead who can also build, debug, and trade.</p>
+        <p>This is rare in the contractor market and is the most common reason engagements extend beyond their original scope.</p>
       </div>
     </div>
   </section>
@@ -759,17 +903,6 @@
           <li><strong>ETRM Implementation Lead / Senior Business Analyst</strong>, covering vendor selection, requirements gathering, integration design, data mapping, UAT, and go-live for trading platforms</li>
           <li><strong>Sales Engineering and pre-sales</strong>, for ETRM vendors and trading SaaS providers</li>
         </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Hands-on -->
-  <section class="body-section">
-    <div class="container">
-      <div class="inner">
-        <h2>Hands-on, not oversight-only</h2>
-        <p>Engagements range from full programme leadership down to rolling up sleeves on a model, a platform spec, or an algorithm. Most clients hire the combination, a programme lead who can also build, debug, and trade.</p>
-        <p>This is rare in the contractor market and is the most common reason engagements extend beyond their original scope.</p>
       </div>
     </div>
   </section>
@@ -806,12 +939,26 @@
     </div>
   </section>
 
+  <!-- Testimonial -->
+  <section class="recruiter-testimonial">
+    <div class="container">
+      <blockquote>"Dmitrii and Ram Sky have a unique combination of commercial, technical and delivery skills. They managed to build a transformative battery platform that improved commercial performance, delivered significant levels of automation, and reduced cost to serve. Dmitrii has incredibly high standards, a flawless delivery track record and a level of energy that helps drive entire teams forward. I would rank Dmitrii amongst the very best in our business, and anyone lucky enough to have the opportunity to hire him should do so without hesitation!"</blockquote>
+      <div class="recruiter-testimonial-author">
+        <div class="initials">RC</div>
+        <div>
+          <div class="name">Richard Carey</div>
+          <div class="role">Automated Trading Capability Lead, Shell</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Contact for a CV CTA -->
   <section class="cv-cta">
     <div class="container">
       <div class="cv-cta-inner">
         <h2>Contact for a CV</h2>
-        <p>Email, call, or message on LinkedIn for a copy of the contractor CV.</p>
+        <p><a href="/CV_Dmitrii_Ishutin.pdf" target="_blank" rel="noopener noreferrer" style="color: var(--terracotta); font-weight: 600;">Download the CV directly (PDF)</a> or get in touch via email, phone, or LinkedIn.</p>
         <div class="cv-channels">
           <a href="mailto:dmitrii.ishutin@ramsky.co.uk" class="cv-channel" aria-label="Email Dmitrii Ishutin">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -836,7 +983,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="/" class="logo">
-          <img src="https://raw.githubusercontent.com/DmitriiIshutin/ramsky_website/main/logo.png" alt="Ram Sky" height="48" width="48" style="display: block; margin-bottom: 20px;">
+          <img src="https://ramsky.co.uk/logo.png" alt="Ram Sky" height="48" width="48" style="display: block; margin-bottom: 20px;">
         </a>
         <p>Boutique energy trading consultancy.</p>
         <p>We design, build, and launch trading and forecasting platforms, algorithms and route-to-market infrastructure.</p>
